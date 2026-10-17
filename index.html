@@ -12,22 +12,25 @@
     font-family:'Courier New', monospace;
     color:#e0e0e0; user-select:none;
     touch-action:none;
+    position:fixed;
+    overscroll-behavior:none;
   }
   #game { display:block; width:100%; height:100%; image-rendering: pixelated; cursor: crosshair; touch-action:none; }
   #ui { position:absolute; inset:0; pointer-events:none; z-index:5; }
+
   .hud {
-    position:absolute; background:rgba(0,0,0,0.65);
-    border:2px solid #555; padding:5px 8px;
-    font-size:12px; line-height:1.4; text-shadow:1px 1px 0 #000;
+    position:absolute; background:rgba(0,0,0,0.7);
+    border:2px solid #555; padding:4px 8px;
+    font-size:12px; line-height:1.3; text-shadow:1px 1px 0 #000;
   }
-  #hud-left { top:8px; left:8px; min-width:170px; }
-  #hud-right { top:8px; right:8px; text-align:right; min-width:170px; }
+  #hud-left { top:6px; left:6px; min-width:150px; }
+  #hud-right { top:6px; right:6px; text-align:right; min-width:150px; }
   #hud-bottom {
-    bottom:8px; left:50%; transform:translateX(-50%);
-    text-align:center; min-width:320px; max-width:90vw;
-    border-color:#f39c12; font-size:12px;
+    bottom:6px; left:50%; transform:translateX(-50%);
+    text-align:center; min-width:300px; max-width:80vw;
+    border-color:#f39c12; font-size:11px;
   }
-  .bar { width:100%; height:7px; background:#111; border:1px solid #444; margin-top:2px; }
+  .bar { width:100%; height:6px; background:#111; border:1px solid #444; margin-top:2px; }
   .bar-fill { height:100%; transition:width 0.15s; }
   #hp-fill { background:linear-gradient(90deg,#c0392b,#e74c3c); }
   #dog-fill { background:linear-gradient(90deg,#2980b9,#3498db); }
@@ -35,241 +38,405 @@
   #kill-fill { background:linear-gradient(90deg,#8e44ad,#9b59b6); }
   #msg {
     position:absolute; top:32%; left:50%; transform:translate(-50%,-50%);
-    text-align:center; font-size:22px; font-weight:bold;
+    text-align:center; font-size:20px; font-weight:bold;
     text-shadow:0 0 10px #000, 0 0 20px #c0392b;
-    background:rgba(0,0,0,0.85); padding:14px 30px;
+    background:rgba(0,0,0,0.85); padding:12px 24px;
     border:2px solid #c0392b; display:none;
-    letter-spacing:2px; pointer-events:none; max-width:90vw;
+    letter-spacing:2px; pointer-events:none; max-width:80vw;
     white-space: pre-line;
   }
-  #floor-choice {
-    display:none; position:absolute;
-    top:50%; left:50%; transform:translate(-50%,-50%);
-    background:rgba(5,5,15,0.98);
-    border:3px solid #3498db; padding:24px 32px;
-    z-index:25; pointer-events:auto; text-align:center;
-    width:min(520px, 92vw);
-    box-shadow:0 0 50px rgba(52,152,219,0.6);
-  }
-  #floor-choice h2 {
-    color:#3498db; margin-bottom:8px;
-    letter-spacing:3px; font-size:22px;
-    text-shadow:0 0 15px #3498db;
-  }
-  #floor-choice .sub {
-    color:#f39c12; font-size:13px; margin-bottom:16px;
-    letter-spacing:2px;
-  }
-  #floor-choice .desc {
-    color:#aaa; font-size:13px; margin-bottom:18px;
-    line-height:1.6; text-align:left;
-    background:rgba(0,0,0,0.4); padding:12px;
-    border-left:3px solid #3498db;
-  }
-  #floor-choice .btns { display:flex; gap:10px; justify-content:center; flex-wrap:wrap; }
-  #floor-choice button {
-    padding:12px 24px; font-family:inherit;
-    font-size:14px; font-weight:bold;
-    cursor:pointer; transition:0.15s;
-    letter-spacing:1px; touch-action:manipulation;
-    border:3px solid;
-    min-width:180px;
-  }
-  #floor-choice .yes {
-    background:#27ae60; color:#fff;
-    border-color:#2ecc71;
-    box-shadow:0 0 15px rgba(46,204,113,0.5);
-  }
-  #floor-choice .yes:hover { background:#2ecc71; }
-  #floor-choice .no {
-    background:#7f2c2c; color:#fff;
-    border-color:#c0392b;
-  }
-  #floor-choice .no:hover { background:#c0392b; }
+
   #menu {
     position:absolute; inset:0;
     background:radial-gradient(circle,#1a0505,#000);
     display:flex; flex-direction:column; align-items:center; justify-content:center;
-    text-align:center; z-index:10; pointer-events:auto; padding:20px; overflow-y:auto;
+    text-align:center; z-index:10; pointer-events:auto; padding:16px; overflow-y:auto;
   }
   #menu h1 {
-    font-size:38px; color:#e74c3c;
+    font-size:36px; color:#e74c3c;
     text-shadow:0 0 20px #e74c3c, 3px 3px 0 #500;
-    margin-bottom:10px; letter-spacing:5px;
+    margin-bottom:8px; letter-spacing:5px;
   }
-  #menu h2 { font-size:16px; color:#f39c12; margin-bottom:16px; letter-spacing:3px; }
-  #menu p { margin:3px 0; font-size:13px; color:#aaa; }
-  #menu .keys { margin-top:12px; color:#888; font-size:11px; line-height:1.7; letter-spacing:0.5px; }
+  #menu h2 { font-size:15px; color:#f39c12; margin-bottom:14px; letter-spacing:3px; }
+  #menu p { margin:2px 0; font-size:12px; color:#aaa; }
+  #menu .keys { margin-top:10px; color:#888; font-size:11px; line-height:1.6; letter-spacing:0.5px; }
   #menu button {
-    margin-top:18px; padding:12px 40px;
-    font-size:16px; font-family:inherit; font-weight:bold;
+    margin-top:8px; padding:11px 36px;
+    font-size:15px; font-family:inherit; font-weight:bold;
     background:#c0392b; color:#fff;
     border:3px solid #e74c3c; cursor:pointer;
     letter-spacing:2px; transition:0.15s;
     box-shadow:0 0 20px rgba(231,76,60,0.4);
     touch-action:manipulation;
+    min-width:260px;
   }
   #menu button:hover { background:#e74c3c; }
   #menu button:active { transform:scale(0.96); }
-  #select-screen {
-    display:none; position:absolute; inset:0;
+  #menu button.gold { background:#d4a017; border-color:#f1c40f; color:#000; }
+  #menu button.green { background:#27ae60; border-color:#2ecc71; color:#fff; }
+  #menu button.blue { background:#2980b9; border-color:#3498db; color:#fff; }
+  #menu button.red { background:#7f0000; border-color:#c0392b; color:#fff; margin-top:16px; }
+  #menu .coins-display { color:#f1c40f; font-size:13px; margin:8px 0; letter-spacing:2px; }
+
+  .overlay-panel {
+    position:absolute; inset:0;
     background:radial-gradient(circle,#1a0505,#000);
-    flex-direction:column; align-items:center; justify-content:center;
-    text-align:center; z-index:12; padding:20px;
-    overflow-y:auto; pointer-events:auto;
+    display:none; flex-direction:column;
+    align-items:center; justify-content:flex-start;
+    text-align:center; z-index:15;
+    pointer-events:auto; padding:12px;
+    overflow-y:auto;
   }
-  #select-screen h2 { color:#e74c3c; font-size:22px; margin-bottom:6px; letter-spacing:3px; text-shadow:0 0 15px #e74c3c; }
-  #select-screen h3 { color:#f39c12; font-size:14px; margin:14px 0 6px; letter-spacing:2px; }
-  #select-screen .desc { color:#aaa; font-size:12px; margin-bottom:4px; max-width:380px; line-height:1.5; }
-  .option-group { display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin:4px 0 8px; }
-  .option-btn {
-    padding:10px 18px; font-family:inherit;
-    background:#1a1a1a; border:2px solid #444;
-    color:#ddd; font-size:13px; cursor:pointer;
-    transition:0.15s; letter-spacing:1px;
-    min-width:130px; touch-action:manipulation;
+  .overlay-panel.active { display:flex; }
+  .overlay-panel h2 {
+    color:#f1c40f; font-size:22px; margin:8px 0;
+    letter-spacing:3px; text-shadow:0 0 15px #f1c40f;
   }
-  .option-btn:hover { border-color:#f39c12; color:#f39c12; }
-  .option-btn.active {
-    background:#c0392b; border-color:#e74c3c;
-    color:#fff; box-shadow:0 0 15px rgba(231,76,60,0.5);
+  .overlay-panel .coins {
+    color:#f1c40f; font-size:14px; margin-bottom:10px;
+    letter-spacing:2px;
   }
-  .option-btn .small { display:block; font-size:10px; color:#888; margin-top:2px; }
-  .option-btn.active .small { color:#ffd; }
-  #select-screen .play-btn {
-    margin-top:20px; padding:14px 50px;
-    font-size:18px; font-family:inherit; font-weight:bold;
+  .overlay-panel .content {
+    max-width:min(700px, 94vw);
+    width:100%; max-height:55vh; overflow-y:auto;
+    text-align:left; margin-bottom:10px;
+    padding-right:6px;
+  }
+  .shop-item, .quest-item {
+    display:flex; justify-content:space-between; align-items:center;
+    padding:9px 12px; margin:6px 0;
+    background:rgba(0,0,0,0.5);
+    border:2px solid #444;
+    transition:0.15s;
+    font-size:13px;
+    gap:8px;
+  }
+  .shop-item.owned { opacity:0.4; }
+  .shop-item .info { flex:1; text-align:left; }
+  .shop-item .info .name { color:#e0e0e0; font-weight:bold; }
+  .shop-item .info .desc { color:#888; font-size:11px; margin-top:2px; }
+  .shop-item .price { color:#f1c40f; font-weight:bold; font-size:14px; white-space:nowrap; }
+  .shop-item button {
+    padding:6px 12px; font-family:inherit; font-size:11px;
     background:#27ae60; color:#fff;
-    border:3px solid #2ecc71; cursor:pointer;
-    letter-spacing:3px; transition:0.15s;
-    box-shadow:0 0 20px rgba(46,204,113,0.5);
+    border:2px solid #2ecc71; cursor:pointer;
+    font-weight:bold; touch-action:manipulation;
+  }
+  .shop-item button:disabled {
+    background:#333; border-color:#444;
+    color:#666; cursor:not-allowed;
+  }
+  .quest-item { border-color:#9b59b6; background:rgba(40,10,60,0.4); }
+  .quest-item.completed { border-color:#27ae60; background:rgba(10,50,20,0.4); }
+  .quest-item .info { flex:1; text-align:left; }
+  .quest-item .info .name { color:#e0e0e0; font-weight:bold; }
+  .quest-item .info .desc { color:#aaa; font-size:11px; margin-top:2px; }
+  .quest-item .info .progress { color:#9b59b6; font-size:10px; margin-top:3px; }
+  .quest-item.completed .info .progress { color:#2ecc71; }
+  .quest-item .reward { color:#f1c40f; font-weight:bold; font-size:14px; white-space:nowrap; }
+  .quest-item .status {
+    padding:5px 10px; font-size:11px;
+    background:#9b59b6; color:#fff;
+    border:2px solid #c39bd3;
+    font-weight:bold; white-space:nowrap;
+  }
+  .quest-item.completed .status { background:#27ae60; border-color:#2ecc71; }
+  .quest-item .status.claimed { background:#444; border-color:#555; color:#888; }
+  .overlay-panel .back-btn {
+    padding:9px 26px;
+    font-size:13px; font-family:inherit;
+    background:#c0392b; color:#fff;
+    border:3px solid #e74c3c; cursor:pointer;
+    font-weight:bold; letter-spacing:2px;
     touch-action:manipulation;
+    margin-top:8px;
   }
-  #select-screen .play-btn:hover { background:#2ecc71; }
-  #select-screen .back-btn {
-    margin-top:10px; padding:8px 24px;
-    font-size:12px; font-family:inherit;
-    background:transparent; color:#888;
-    border:2px solid #444; cursor:pointer;
-    letter-spacing:1px;
+
+  #tutorial-overlay {
+    position:absolute; inset:0;
+    background:rgba(0,0,0,0.85);
+    z-index:30;
+    pointer-events:auto;
+    display:none;
+    align-items:center; justify-content:center;
+    padding:10px;
   }
+  #tutorial-overlay.active { display:flex; }
+  #tutorial-box {
+    background:linear-gradient(135deg,#1a0a05,#0a0505);
+    border:3px solid #f39c12;
+    padding:16px 20px;
+    max-width:min(560px, 94vw);
+    max-height:90vh;
+    overflow-y:auto;
+    box-shadow:0 0 50px rgba(243,156,18,0.6);
+    text-align:left;
+  }
+  #tutorial-box h2 {
+    color:#f39c12; text-align:center;
+    letter-spacing:3px; font-size:18px;
+    margin-bottom:10px;
+    text-shadow:0 0 15px #f39c12;
+  }
+  #tutorial-box .tut-line {
+    color:#ddd; font-size:12px;
+    line-height:1.6; margin:6px 0;
+    padding-left:6px;
+    border-left:2px solid #555;
+  }
+  #tutorial-box .tut-line b { color:#f39c12; }
+  #tutorial-box .tut-line .icon {
+    display:inline-block; width:20px; text-align:center;
+    margin-right:4px;
+  }
+  #tutorial-box .continue-btn {
+    display:block; margin:14px auto 0;
+    padding:10px 30px; font-family:inherit;
+    font-size:14px; font-weight:bold;
+    background:#f39c12; color:#000;
+    border:none; cursor:pointer;
+    letter-spacing:2px; touch-action:manipulation;
+  }
+
+  #floor-choice {
+    display:none; position:absolute;
+    top:50%; left:50%; transform:translate(-50%,-50%);
+    background:rgba(5,5,15,0.98);
+    border:3px solid #3498db; padding:16px 20px;
+    z-index:25; pointer-events:auto; text-align:center;
+    width:min(520px, 94vw); max-height:90vh; overflow-y:auto;
+    box-shadow:0 0 50px rgba(52,152,219,0.6);
+  }
+  #floor-choice h2 {
+    color:#3498db; margin-bottom:6px;
+    letter-spacing:3px; font-size:18px;
+  }
+  #floor-choice .sub { color:#f39c12; font-size:12px; margin-bottom:10px; }
+  #floor-choice .desc {
+    color:#aaa; font-size:11px; margin-bottom:12px;
+    line-height:1.5; text-align:left;
+    background:rgba(0,0,0,0.4); padding:10px;
+    border-left:3px solid #3498db;
+  }
+  #floor-choice .btns { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; }
+  #floor-choice button {
+    padding:10px 18px; font-family:inherit;
+    font-size:12px; font-weight:bold;
+    cursor:pointer; border:3px solid;
+    min-width:160px;
+  }
+  #floor-choice .yes { background:#27ae60; color:#fff; border-color:#2ecc71; }
+  #floor-choice .no { background:#7f2c2c; color:#fff; border-color:#c0392b; }
+
   #shop {
     display:none; position:absolute;
     top:50%; left:50%; transform:translate(-50%,-50%);
     background:rgba(5,5,5,0.98);
-    border:3px solid #f39c12; padding:18px 22px;
+    border:3px solid #f39c12; padding:14px 18px;
     z-index:20; pointer-events:auto; text-align:center;
-    width:min(480px, 92vw); max-height:85vh; overflow-y:auto;
-    box-shadow:0 0 40px rgba(243,156,18,0.3);
+    width:min(480px, 94vw); max-height:90vh; overflow-y:auto;
   }
-  #shop h2 { color:#f39c12; margin-bottom:10px; letter-spacing:3px; font-size:20px; }
+  #shop h2 { color:#f39c12; margin-bottom:8px; letter-spacing:3px; font-size:17px; }
   #shop .item {
-    display:flex; justify-content:space-between;
-    align-items:center; padding:9px 12px;
-    margin:5px 0; border:1px solid #333;
-    cursor:pointer; transition:0.15s;
-    font-size:13px; touch-action:manipulation;
+    display:flex; justify-content:space-between; align-items:center;
+    padding:7px 10px; margin:4px 0;
+    border:1px solid #333; cursor:pointer;
+    font-size:12px;
   }
-  #shop .item:hover { background:#1a1a1a; border-color:#f39c12; }
   #shop .item.owned { opacity:0.35; cursor:default; }
   #shop .buy { color:#f39c12; font-weight:bold; }
   #shop button {
-    margin-top:12px; padding:10px 30px;
+    margin-top:8px; padding:8px 24px;
     background:#f39c12; border:none;
     color:#000; font-family:inherit;
-    font-size:14px; cursor:pointer;
+    font-size:13px; cursor:pointer;
     font-weight:bold; letter-spacing:2px;
-    touch-action:manipulation;
   }
-  .controls-pc {
-    position:absolute; bottom:6px; right:10px;
-    font-size:10px; color:#555;
-    text-align:right; line-height:1.5;
-  }
+
   #sound-btn {
-    position:absolute; top:10px; left:50%;
+    position:absolute; top:6px; left:50%;
     transform:translateX(-50%);
     background:rgba(0,0,0,0.7);
     border:2px solid #555; color:#e0e0e0;
-    padding:4px 12px; font-family:inherit;
-    font-size:11px; cursor:pointer;
+    padding:3px 10px; font-family:inherit;
+    font-size:10px; cursor:pointer;
     pointer-events:auto; letter-spacing:1px;
     touch-action:manipulation;
+    z-index:7;
   }
+  #exit-to-menu-btn {
+    position:absolute; top:6px; left:50%;
+    transform:translateX(calc(-50% - 100px));
+    background:rgba(139,0,0,0.9);
+    border:2px solid #e74c3c; color:#fff;
+    padding:4px 10px; font-family:inherit;
+    font-size:10px; cursor:pointer;
+    pointer-events:auto; letter-spacing:1px;
+    touch-action:manipulation;
+    z-index:7;
+    display:none;
+    font-weight:bold;
+  }
+  #exit-to-menu-btn.visible { display:block; }
+  .controls-pc {
+    position:absolute; bottom:4px; right:8px;
+    font-size:9px; color:#555;
+    text-align:right; line-height:1.4;
+  }
+
   #mobile-controls { display:none; }
   .touch-btn {
-    position:absolute; bottom:20px;
-    width:64px; height:64px;
-    background:rgba(255,255,255,0.15);
-    border:2px solid rgba(255,255,255,0.4);
+    position:absolute;
+    width:62px; height:62px;
+    background:rgba(255,255,255,0.18);
+    border:2px solid rgba(255,255,255,0.5);
     border-radius:50%;
-    color:#fff; font-size:24px;
+    color:#fff; font-size:22px; font-weight:bold;
     display:flex; align-items:center; justify-content:center;
     pointer-events:auto; touch-action:none;
     user-select:none;
+    z-index:8;
+    box-shadow:0 0 10px rgba(0,0,0,0.5);
   }
-  .touch-btn:active { background:rgba(255,255,255,0.35); }
-  #btn-left { left:20px; }
-  #btn-right { left:100px; }
-  #btn-jump { right:100px; bottom:90px; }
-  #btn-shoot { right:20px; }
-  #btn-reload { right:100px; }
-  #btn-weapon { left:180px; }
+  .touch-btn:active { background:rgba(255,255,255,0.4); }
+  #btn-left { left:12px; bottom:14px; }
+  #btn-right { left:82px; bottom:14px; }
+  #btn-jump { right:82px; bottom:14px; }
+  #btn-shoot { right:12px; bottom:14px; width:70px; height:70px; font-size:26px; background:rgba(220,50,50,0.35); border-color:rgba(255,100,100,0.7); }
+  #btn-reload { right:12px; bottom:96px; width:48px; height:48px; font-size:14px; }
+  #btn-weapon { left:12px; bottom:96px; width:48px; height:48px; font-size:18px; }
+
+  #rotate-overlay {
+    display:none;
+    position:fixed; inset:0;
+    background:radial-gradient(circle,#1a0505,#000);
+    z-index:99999;
+    flex-direction:column;
+    align-items:center; justify-content:center;
+    text-align:center; padding:20px;
+    color:#f39c12;
+  }
+  #rotate-overlay.active { display:flex; }
+  #rotate-overlay .phone-icon {
+    font-size:90px;
+    animation: rotatePhone 2s ease-in-out infinite;
+    margin-bottom:24px;
+  }
+  @keyframes rotatePhone {
+    0%, 100% { transform: rotate(0deg); }
+    50% { transform: rotate(90deg); }
+  }
+  #rotate-overlay h2 {
+    color:#e74c3c; font-size:26px;
+    letter-spacing:3px; margin-bottom:16px;
+    text-shadow:0 0 20px #e74c3c;
+  }
+  #rotate-overlay p {
+    color:#aaa; font-size:14px; line-height:1.6;
+    max-width:320px; letter-spacing:1px;
+  }
+
   #loading-overlay {
     position:absolute; inset:0;
-    background:rgba(0,0,0,0.9);
+    background:rgba(0,0,0,0.92);
     display:flex; flex-direction:column;
     align-items:center; justify-content:center;
     z-index:100; color:#f39c12;
-    font-size:16px; letter-spacing:2px;
+    font-size:14px; letter-spacing:2px; padding:16px;
   }
   #loading-overlay.hidden { display:none; }
   #loading-progress {
-    width:min(400px, 80vw); height:14px;
+    width:min(400px, 84vw); height:12px;
     background:#222; border:2px solid #f39c12;
-    margin-top:14px; overflow:hidden;
+    margin-top:12px; overflow:hidden;
   }
   #loading-bar { height:100%; background:#f39c12; width:0%; transition:width 0.2s; }
   #loading-list {
-    margin-top:16px; font-size:11px; color:#888; max-height:200px;
+    margin-top:12px; font-size:10px; color:#888; max-height:150px;
     overflow-y:auto; text-align:left;
-    width:min(400px, 80vw); padding:0 10px; line-height:1.6;
+    width:min(400px, 84vw); padding:0 8px; line-height:1.4;
   }
   #loading-list .ok { color:#2ecc71; }
   #loading-list .fail { color:#e74c3c; }
+
   @media (max-width: 900px) {
-    #menu h1 { font-size:30px; letter-spacing:3px; }
-    #menu h2 { font-size:14px; }
-    #menu p { font-size:12px; }
+    #menu h1 { font-size:28px; letter-spacing:3px; }
+    #menu h2 { font-size:13px; }
+    #menu p { font-size:11px; }
+    #menu button { padding:10px 28px; font-size:14px; min-width:220px; }
     .controls-pc { display:none; }
-    #hud-left, #hud-right { font-size:11px; min-width:140px; }
-    #hud-bottom { font-size:11px; min-width:260px; }
+    #hud-left, #hud-right { font-size:10px; min-width:120px; padding:3px 6px; }
+    #hud-bottom { font-size:10px; min-width:220px; padding:3px 6px; }
+  }
+
+  @media (max-height: 500px) {
+    #hud-left, #hud-right { font-size:9px; min-width:110px; padding:2px 5px; line-height:1.2; }
+    #hud-bottom { font-size:9px; min-width:200px; padding:2px 5px; line-height:1.2; bottom:4px; }
+    .bar { height:4px; margin-top:1px; }
+    #menu h1 { font-size:24px; margin-bottom:4px; }
+    #menu h2 { font-size:11px; margin-bottom:8px; }
+    #menu p { display:none; }
+    #menu .keys { font-size:9px; margin-top:6px; }
+    #menu button { padding:8px 24px; font-size:13px; min-width:200px; margin-top:5px; }
+    .touch-btn { width:54px; height:54px; font-size:20px; }
+    #btn-shoot { width:60px; height:60px; font-size:24px; }
+    #btn-reload { width:44px; height:44px; font-size:12px; bottom:80px; }
+    #btn-weapon { width:44px; height:44px; font-size:16px; bottom:80px; }
+    #msg { font-size:16px; padding:8px 16px; }
+    #tutorial-box { padding:12px 16px; }
+    #tutorial-box h2 { font-size:16px; margin-bottom:8px; }
+    #tutorial-box .tut-line { font-size:11px; margin:4px 0; }
+    #tutorial-box .continue-btn { padding:8px 24px; font-size:13px; margin-top:10px; }
+    .overlay-panel h2 { font-size:18px; margin:4px 0; }
+    .overlay-panel .coins { font-size:12px; margin-bottom:6px; }
+    .overlay-panel .content { max-height:60vh; }
+    .shop-item, .quest-item { padding:6px 10px; margin:4px 0; font-size:12px; }
+    #floor-choice { padding:12px 16px; }
+    #floor-choice h2 { font-size:16px; }
+    #floor-choice .desc { font-size:10px; padding:8px; }
+    #floor-choice button { padding:8px 14px; font-size:11px; min-width:140px; }
+    #shop { padding:10px 14px; }
+    #shop h2 { font-size:15px; }
+    #shop .item { padding:6px 8px; font-size:11px; }
+    #sound-btn { font-size:9px; padding:2px 8px; }
+    #exit-to-menu-btn { font-size:9px; padding:3px 8px; transform:translateX(calc(-50% - 80px)); }
   }
 </style>
 </head>
 <body>
+
+<!-- Экран "Поверни телефон" -->
+<div id="rotate-overlay">
+  <div class="phone-icon">📱</div>
+  <h2>ПОВЕРНИ ТЕЛЕФОН</h2>
+  <p>Игра работает только в горизонтальном положении. Поверни устройство, чтобы играть.</p>
+</div>
+
 <canvas id="game"></canvas>
 
 <div id="ui">
   <div class="hud" id="hud-left">
     <div>❤️ HP: <span id="hp-val">100</span></div>
     <div class="bar"><div class="bar-fill" id="hp-fill" style="width:100%"></div></div>
-    <div style="margin-top:4px">🐕 Барс: <span id="dog-val">100</span></div>
+    <div style="margin-top:3px">🐕 Барс: <span id="dog-val">100</span></div>
     <div class="bar"><div class="bar-fill" id="dog-fill" style="width:100%"></div></div>
+    <div style="margin-top:3px; color:#f1c40f">🪙 <span id="coins-val">0</span> коп.</div>
   </div>
   <div class="hud" id="hud-right">
     <div>🔫 <span id="weapon-name">Пистолет</span></div>
     <div>Мастерство: <span id="mastery">1</span></div>
     <div class="bar"><div class="bar-fill" id="xp-fill" style="width:0%"></div></div>
-    <div style="margin-top:4px">💰 <span id="money">0</span> | 🍖 <span id="food">0</span></div>
+    <div style="margin-top:3px">💰 <span id="money">0</span> | 🍖 <span id="food">0</span></div>
     <div>🔸 <span id="ammo">12</span>/<span id="ammo-max">12</span></div>
+    <div style="color:#3498db">🛡️ Броня: <span id="armor-val">0</span></div>
   </div>
   <div class="hud" id="hud-bottom">
     <div>💀 Убито: <span id="kills">0</span> / <span id="kills-needed">100</span> · 🏢 Этаж: <span id="floor">1</span></div>
     <div class="bar"><div class="bar-fill" id="kill-fill" style="width:0%"></div></div>
-    <div style="margin-top:3px" id="objective">Убейте 100 мобов чтобы призвать Мясника</div>
+    <div style="margin-top:2px" id="objective">Убейте 100 мобов чтобы призвать Мясника</div>
   </div>
   <button id="sound-btn">🔊 ЗВУК: ВКЛ</button>
+  <button id="exit-to-menu-btn">← В МЕНЮ</button>
 
   <div id="mobile-controls">
     <div class="touch-btn" id="btn-left">◀</div>
@@ -288,16 +455,43 @@
 
   <div id="msg"></div>
 
+  <div id="tutorial-overlay">
+    <div id="tutorial-box">
+      <h2>🎓 ОБУЧЕНИЕ</h2>
+      <div class="tut-line">
+        <span class="icon">❤️</span><b>HP</b> — левый верхний угол. Под ним — здоровье Барса.
+      </div>
+      <div class="tut-line">
+        <span class="icon">🔫</span><b>Оружие и мастерство</b> — правый верхний угол. Мастерство растёт с убийствами.
+      </div>
+      <div class="tut-line">
+        <span class="icon">💀</span><b>Убийства / Босс</b> — внизу по центру. Прогресс до призыва босса.
+      </div>
+      <div class="tut-line">
+        <span class="icon">🪙</span><b>Копейки СССР</b> — левый верхний угол. За убийства, боссов и задания. Тратятся в магазине меню.
+      </div>
+      <div class="tut-line">
+        <span class="icon">🛡️</span><b>Броня</b> — справа внизу. Покупается в магазине меню.
+      </div>
+      <div class="tut-line">
+        <span class="icon">🎮</span><b>Управление:</b> A/D или ←/→ — ходьба · W/Space — прыжок · Мышь — прицел · ЛКМ — огонь · R — перезарядка · 1–4 — оружие
+      </div>
+      <div class="tut-line">
+        <span class="icon">🐕</span><b>Барс</b> — прыгает с вами, ищет лут, кусает врагов.
+      </div>
+      <button class="continue-btn" onclick="closeTutorial()">ПОНЯТНО, В БОЙ ▶</button>
+    </div>
+  </div>
+
   <div id="floor-choice">
     <h2>🛗 ЛИФТ ОТКРЫТ</h2>
     <div class="sub">Каждые 35 убийств — выбор этажа</div>
     <div class="desc">
-      <b>Второй этаж:</b> другой фон (ночная промзона), враги сильнее (×1.5 HP и урон), 
-      больше лута и денег за убийства (+100%). Спуститься вниз можно через лифт в любой момент.
+      <b>Второй этаж:</b> другой фон (ночная промзона), враги сильнее (×1.5 HP и урон), больше лута и денег (+100%).
     </div>
     <div class="btns">
-      <button class="yes" onclick="chooseFloor(true)">🔼 ПОДНЯТЬСЯ НА 2 ЭТАЖ</button>
-      <button class="no" onclick="chooseFloor(false)">▶ ОСТАТЬСЯ НА 1 ЭТАЖЕ</button>
+      <button class="yes" onclick="chooseFloor(true)">🔼 ПОДНЯТЬСЯ</button>
+      <button class="no" onclick="chooseFloor(false)">▶ ОСТАТЬСЯ</button>
     </div>
   </div>
 
@@ -313,49 +507,67 @@
   <h2>ОХОТА НА МАЛГРИМА</h2>
   <p>Злой волшебник Малгрим захватил мир.</p>
   <p>Вы — последний спецназовец. С вами верный пёс Барс.</p>
-  <p>Убивайте врагов, укрывайтесь за препятствиями и прыгайте!</p>
+  <div class="coins-display">🪙 Копейки СССР: <span id="menu-coins">0</span></div>
   <div class="keys" id="menu-keys"></div>
-  <button onclick="showSelectScreen()">ИГРАТЬ</button>
+  <button onclick="showSelectScreen()">⚔️ ИГРАТЬ</button>
+  <button class="green" onclick="startSaveMode()">💾 СОХРАНЕНИЕ</button>
+  <button class="gold" onclick="openMenuShop()">🛒 МАГАЗИН</button>
+  <button class="blue" onclick="openQuests()">📋 ЗАДАНИЯ</button>
+  <button class="red" onclick="exitGame()">⏻ ВЫЙТИ ИЗ ИГРЫ</button>
 </div>
 
-<div id="select-screen">
+<div id="select-screen" class="overlay-panel">
   <h2>ВЫБОР РЕЖИМА ИГРЫ</h2>
-  <h3>🎮 РЕЖИМ</h3>
-  <div class="option-group">
-    <button class="option-btn active" data-mode="survival" onclick="selectMode('survival')">
+  <h3 style="color:#f39c12;font-size:13px;margin:8px 0 4px;letter-spacing:2px;">🎮 РЕЖИМ</h3>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:4px 0 8px;">
+    <button class="option-btn active" data-mode="survival" onclick="selectMode('survival')" style="padding:8px 16px;font-family:inherit;background:#c0392b;border:2px solid #e74c3c;color:#fff;font-size:12px;cursor:pointer;min-width:120px;letter-spacing:1px;">
       ВЫЖИВАНИЕ
-      <span class="small">Классическая игра с сюжетом</span>
+      <span style="display:block;font-size:9px;color:#ffd;margin-top:2px;">Классика</span>
     </button>
-    <button class="option-btn" data-mode="creative" onclick="selectMode('creative')">
+    <button class="option-btn" data-mode="creative" onclick="selectMode('creative')" style="padding:8px 16px;font-family:inherit;background:#1a1a1a;border:2px solid #444;color:#ddd;font-size:12px;cursor:pointer;min-width:120px;letter-spacing:1px;">
       ТВОРЧЕСКИЙ
-      <span class="small">∞ денег, бессмертие</span>
+      <span style="display:block;font-size:9px;color:#888;margin-top:2px;">∞ денег</span>
     </button>
   </div>
-  <div class="desc" id="mode-desc">Выживание: враги убивают, ресурсы ограничены.</div>
+  <div style="color:#aaa;font-size:11px;margin-bottom:4px;max-width:380px;line-height:1.4;" id="mode-desc">Выживание: враги убивают, ресурсы ограничены.</div>
 
-  <h3>⚙️ СЛОЖНОСТЬ</h3>
-  <div class="option-group">
-    <button class="option-btn" data-diff="peaceful" onclick="selectDiff('peaceful')">
+  <h3 style="color:#f39c12;font-size:13px;margin:8px 0 4px;letter-spacing:2px;">⚙️ СЛОЖНОСТЬ</h3>
+  <div style="display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin:4px 0 8px;">
+    <button class="option-btn" data-diff="peaceful" onclick="selectDiff('peaceful')" style="padding:8px 14px;font-family:inherit;background:#1a1a1a;border:2px solid #444;color:#ddd;font-size:12px;cursor:pointer;min-width:110px;letter-spacing:1px;">
       МИРНЫЙ
-      <span class="small">Враги не трогают</span>
+      <span style="display:block;font-size:9px;color:#888;margin-top:2px;">Враги не трогают</span>
     </button>
-    <button class="option-btn" data-diff="easy" onclick="selectDiff('easy')">
+    <button class="option-btn" data-diff="easy" onclick="selectDiff('easy')" style="padding:8px 14px;font-family:inherit;background:#1a1a1a;border:2px solid #444;color:#ddd;font-size:12px;cursor:pointer;min-width:110px;letter-spacing:1px;">
       ЛЁГКИЙ
-      <span class="small">Меньше врагов, бонусы</span>
+      <span style="display:block;font-size:9px;color:#888;margin-top:2px;">Меньше врагов</span>
     </button>
-    <button class="option-btn active" data-diff="medium" onclick="selectDiff('medium')">
+    <button class="option-btn active" data-diff="medium" onclick="selectDiff('medium')" style="padding:8px 14px;font-family:inherit;background:#c0392b;border:2px solid #e74c3c;color:#fff;font-size:12px;cursor:pointer;min-width:110px;letter-spacing:1px;">
       СРЕДНИЙ
-      <span class="small">Баланс + 2× патроны</span>
+      <span style="display:block;font-size:9px;color:#ffd;margin-top:2px;">Баланс</span>
     </button>
-    <button class="option-btn" data-diff="hard" onclick="selectDiff('hard')">
+    <button class="option-btn" data-diff="hard" onclick="selectDiff('hard')" style="padding:8px 14px;font-family:inherit;background:#1a1a1a;border:2px solid #444;color:#ddd;font-size:12px;cursor:pointer;min-width:110px;letter-spacing:1px;">
       СЛОЖНЫЙ
-      <span class="small">Полная сложность</span>
+      <span style="display:block;font-size:9px;color:#888;margin-top:2px;">Полная</span>
     </button>
   </div>
-  <div class="desc" id="diff-desc">Средний: баланс, 2× патроны, стандартный урон.</div>
+  <div style="color:#aaa;font-size:11px;margin-bottom:4px;max-width:380px;line-height:1.4;" id="diff-desc">Средний: баланс, 2× патроны, стандартный урон.</div>
 
-  <button class="play-btn" onclick="startGame()">НАЧАТЬ ОХОТУ ▶</button>
-  <button class="back-btn" onclick="backToMenu()">← НАЗАД</button>
+  <button onclick="startGame()" style="margin-top:14px;padding:12px 40px;font-size:16px;font-family:inherit;font-weight:bold;background:#27ae60;color:#fff;border:3px solid #2ecc71;cursor:pointer;letter-spacing:3px;touch-action:manipulation;box-shadow:0 0 20px rgba(46,204,113,0.5);">НАЧАТЬ ОХОТУ ▶</button>
+  <button class="back-btn" onclick="backToMenu()" style="margin-top:8px;">← НАЗАД</button>
+</div>
+
+<div id="menu-shop" class="overlay-panel">
+  <h2>🛒 МАГАЗИН</h2>
+  <div class="coins">🪙 Копейки СССР: <span id="shop-coins">0</span></div>
+  <div class="content" id="menu-shop-items"></div>
+  <button class="back-btn" onclick="closeMenuShop()">← НАЗАД</button>
+</div>
+
+<div id="quests-panel" class="overlay-panel">
+  <h2>📋 ЗАДАНИЯ</h2>
+  <div class="coins">🪙 Копейки СССР: <span id="quests-coins">0</span></div>
+  <div class="content" id="quests-items"></div>
+  <button class="back-btn" onclick="closeQuests()">← НАЗАД</button>
 </div>
 
 <div id="loading-overlay">
@@ -365,6 +577,41 @@
 </div>
 
 <script>
+// ==================== ОРИЕНТАЦИЯ ЭКРАНА ====================
+const rotateOverlay = document.getElementById('rotate-overlay');
+
+function checkOrientation() {
+  const isPortrait = window.innerHeight > window.innerWidth;
+  const isTouchDevice = ('ontouchstart' in window) || (navigator.maxTouchPoints > 0);
+  const isSmallScreen = window.innerWidth < 1024 && isTouchDevice;
+
+  if (isPortrait && isSmallScreen) {
+    rotateOverlay.classList.add('active');
+  } else {
+    rotateOverlay.classList.remove('active');
+  }
+}
+
+window.addEventListener('resize', checkOrientation);
+window.addEventListener('orientationchange', () => setTimeout(checkOrientation, 100));
+checkOrientation();
+
+function tryLockOrientation() {
+  if (screen.orientation && screen.orientation.lock) {
+    screen.orientation.lock('landscape').catch(() => {});
+  }
+}
+
+function tryFullscreen() {
+  const el = document.documentElement;
+  if (el.requestFullscreen) {
+    el.requestFullscreen().then(() => tryLockOrientation()).catch(() => {});
+  } else if (el.webkitRequestFullscreen) {
+    el.webkitRequestFullscreen();
+    tryLockOrientation();
+  }
+}
+
 // ==================== ЗАГРУЗКА КАРТИНОК ====================
 const IMG = {};
 const IMG_STATUS = {};
@@ -414,6 +661,83 @@ async function loadAllImages() {
   await Promise.all(promises);
   setTimeout(() => overlay.classList.add('hidden'), 500);
 }
+
+// ==================== СОХРАНЕНИЕ ====================
+const SAVE_KEY = 'contra_malgrim_save_v1';
+const COINS_KEY = 'contra_malgrim_coins_v1';
+const PURCHASES_KEY = 'contra_malgrim_purchases_v1';
+const QUESTS_KEY = 'contra_malgrim_quests_v1';
+
+const persistent = {
+  coins: 0,
+  startFood: 0,
+  purchases: { armorHuman: 0, armorDog: 0 },
+  quests: {
+    killed_zombie_total: 0,
+    killed_boss_total: 0,
+    levels_passed: 0,
+    games_played: 0,
+    claimed: {}
+  }
+};
+
+function loadPersistent() {
+  try {
+    const coins = parseInt(localStorage.getItem(COINS_KEY) || '0');
+    if (!isNaN(coins)) persistent.coins = coins;
+    const purchases = JSON.parse(localStorage.getItem(PURCHASES_KEY) || '{}');
+    if (purchases.armorHuman !== undefined) persistent.purchases.armorHuman = purchases.armorHuman;
+    if (purchases.armorDog !== undefined) persistent.purchases.armorDog = purchases.armorDog;
+    if (purchases.startFood !== undefined) persistent.startFood = purchases.startFood;
+    const quests = JSON.parse(localStorage.getItem(QUESTS_KEY) || '{}');
+    Object.assign(persistent.quests, quests);
+  } catch (e) { console.warn('Save load error', e); }
+}
+function savePersistent() {
+  try {
+    localStorage.setItem(COINS_KEY, String(persistent.coins));
+    localStorage.setItem(PURCHASES_KEY, JSON.stringify(persistent.purchases));
+    localStorage.setItem(QUESTS_KEY, JSON.stringify(persistent.quests));
+  } catch (e) { console.warn('Save error', e); }
+}
+function saveFullGameState() {
+  try {
+    const s = {
+      coins: persistent.coins,
+      level: state.level,
+      money: state.money,
+      food: state.food,
+      weapon: player.weapon,
+      unlocked: player.unlocked,
+      ammo: player.ammo,
+      mastery: player.mastery,
+      hp: player.hp,
+      dogHp: dog.hp,
+      timestamp: Date.now()
+    };
+    localStorage.setItem(SAVE_KEY, JSON.stringify(s));
+  } catch (e) { console.warn('Full save error', e); }
+}
+function loadFullGameState() {
+  try { return JSON.parse(localStorage.getItem(SAVE_KEY) || 'null'); }
+  catch (e) { return null; }
+}
+function hasSave() { return localStorage.getItem(SAVE_KEY) !== null; }
+
+loadPersistent();
+
+// ==================== ЗАДАНИЯ ====================
+const QUESTS = [
+  { id:'q_zombie_10', name:'Первая кровь', desc:'Убейте 10 зомби', reward:50, progress:() => persistent.quests.killed_zombie_total, target:10 },
+  { id:'q_zombie_50', name:'Истребитель', desc:'Убейте 50 зомби', reward:150, progress:() => persistent.quests.killed_zombie_total, target:50 },
+  { id:'q_zombie_200', name:'Гроза нежити', desc:'Убейте 200 зомби', reward:500, progress:() => persistent.quests.killed_zombie_total, target:200 },
+  { id:'q_boss_1', name:'Охотник на боссов', desc:'Убейте 1 босса', reward:100, progress:() => persistent.quests.killed_boss_total, target:1 },
+  { id:'q_boss_4', name:'Убийца боссов', desc:'Убейте 4 боссов', reward:400, progress:() => persistent.quests.killed_boss_total, target:4 },
+  { id:'q_level_1', name:'Первый шаг', desc:'Пройдите 1 уровень', reward:75, progress:() => persistent.quests.levels_passed, target:1 },
+  { id:'q_level_4', name:'Победитель', desc:'Пройдите все 4 уровня', reward:800, progress:() => persistent.quests.levels_passed, target:4 },
+  { id:'q_games_3', name:'Ветеран', desc:'Сыграйте 3 игры', reward:200, progress:() => persistent.quests.games_played, target:3 },
+  { id:'q_games_10', name:'Легенда', desc:'Сыграйте 10 игр', reward:1000, progress:() => persistent.quests.games_played, target:10 }
+];
 
 // ==================== ЗВУК ====================
 const Audio = {
@@ -476,12 +800,12 @@ const Audio = {
   enemy_death() { this.tone(200, 0.2, 'sawtooth', 0.25, 50); this.noise(0.25, 0.25, 600, 0.02); },
   boss_death() { this.noise(0.6, 0.5, 400); this.tone(80, 0.5, 'sawtooth', 0.4, 20); this.noise(0.8, 0.4, 300, 0.15); },
   jump() { this.tone(300, 0.12, 'square', 0.15, 700); },
-  double_jump() { this.tone(400, 0.12, 'square', 0.15, 900); this.tone(600, 0.08, 'square', 0.12, 1000, 0.04); },
   land() { this.noise(0.08, 0.15, 400); },
   pickup_ammo() { this.tone(700, 0.06, 'square', 0.2, 900); this.tone(1000, 0.06, 'square', 0.18, 1300, 0.06); },
   pickup_medkit() { this.tone(600, 0.1, 'sine', 0.22); this.tone(800, 0.1, 'sine', 0.22, null, 0.1); this.tone(1000, 0.15, 'sine', 0.22, null, 0.2); },
   pickup_food() { this.tone(500, 0.08, 'sine', 0.25, 700); this.tone(700, 0.08, 'sine', 0.22, 900, 0.08); },
   pickup_money() { this.tone(1200, 0.06, 'triangle', 0.22); this.tone(1600, 0.08, 'triangle', 0.22, null, 0.06); this.tone(2000, 0.06, 'triangle', 0.18, null, 0.12); },
+  pickup_coin() { this.tone(1400, 0.05, 'triangle', 0.2); this.tone(1800, 0.06, 'triangle', 0.2, null, 0.05); this.tone(2200, 0.08, 'triangle', 0.18, null, 0.1); },
   dog_bark() { this.tone(400, 0.08, 'sawtooth', 0.3, 200); this.tone(350, 0.1, 'sawtooth', 0.25, 150, 0.09); },
   dog_bite() { this.tone(180, 0.08, 'square', 0.25, 100); this.noise(0.06, 0.2, 1200); },
   dog_hurt() { this.tone(500, 0.25, 'sine', 0.28, 250); this.tone(450, 0.3, 'sine', 0.2, 200, 0.15); },
@@ -502,6 +826,7 @@ const Audio = {
   boss_appear() { this.tone(80, 0.8, 'sawtooth', 0.35, 40); this.tone(120, 0.7, 'square', 0.2, 60, 0.1); this.noise(0.6, 0.3, 400, 0.2); },
   elevator_open() { this.tone(300, 0.15, 'square', 0.25, 600); this.tone(500, 0.15, 'square', 0.22, 900, 0.13); this.tone(900, 0.25, 'sine', 0.2, 1200, 0.26); },
   elevator_move() { this.tone(150, 0.6, 'sawtooth', 0.18, 400); this.noise(0.6, 0.15, 300); },
+  quest_complete() { [523, 659, 784, 1046, 1318].forEach((f, i) => this.tone(f, 0.2, 'triangle', 0.22, null, i * 0.1)); },
   startMusic(trackName) {
     if (!this.enabled || !this.ctx) return;
     this.stopMusic();
@@ -561,26 +886,24 @@ function resize() { W = canvas.width = window.innerWidth; H = canvas.height = wi
 window.addEventListener('resize', resize);
 resize();
 
-// ==================== КОНСТАНТЫ ====================
 const GROUND_Y = 620;
 const GRAVITY = 0.75;
 const JUMP_POWER = -14;
 const IS_MOBILE = /Android|iPhone|iPad|iPod|Mobile/i.test(navigator.userAgent) || window.innerWidth < 900;
-
 const CHUNK_W = 1200;
 const PLAYER_START_X = 400;
 
 // ==================== РЕЖИМЫ/СЛОЖНОСТИ ====================
 const settings = { mode:'survival', diff:'medium' };
 const MODE_INFO = {
-  survival: { desc: 'Выживание: враги убивают, ресурсы ограничены, магазин дорогой.' },
-  creative: { desc: 'Творческий: ∞ денег, вы неуязвимы (но врагов всё равно надо убить).' }
+  survival: { desc: 'Выживание: враги убивают, ресурсы ограничены.' },
+  creative: { desc: 'Творческий: ∞ денег, вы неуязвимы.' }
 };
 const DIFF_INFO = {
-  peaceful: { desc: 'Мирный: враги не трогают вас. Идеально для исследования сюжета.' },
-  easy:     { desc: 'Лёгкий: меньше врагов, 3× урона, 2× HP, стартовый сундук.' },
-  medium:   { desc: 'Средний: баланс, 2× патроны в луте, стандартный урон.' },
-  hard:     { desc: 'Сложный: 1.5× урона вам, 1.3× врагов, 0.8× HP.' }
+  peaceful: { desc: 'Мирный: враги не трогают.' },
+  easy:     { desc: 'Лёгкий: меньше врагов, 3× урона, 2× HP.' },
+  medium:   { desc: 'Средний: баланс, 2× патроны.' },
+  hard:     { desc: 'Сложный: 1.5× урона вам, 1.3× врагов.' }
 };
 function getGameplayModifiers() {
   const mods = {
@@ -593,7 +916,7 @@ function getGameplayModifiers() {
     case 'peaceful': mods.enemyPassive = true; break;
     case 'easy':
       mods.dmgDealtMul = 3; mods.dmgTakenMul = 0.5;
-      mods.enemyCountMul = 0.6; mods.lootCountMul = 1.8;
+      mods.enemyCountMul = 0.6; mods.lootCountMul = 1.5;
       mods.xpMul = 2; mods.startChest = 4;
       mods.hpMul = 2; mods.dogHpMul = 2; break;
     case 'medium': mods.ammoMul = 2; break;
@@ -608,29 +931,18 @@ function getGameplayModifiers() {
 }
 
 // ==================== БЕСКОНЕЧНАЯ КАРТА ====================
-const chunks = {
-  floor1: new Map(),
-  floor2: new Map()
-};
-
-function getChunkKey(x) {
-  return Math.floor(x / CHUNK_W);
-}
-
+const chunks = { floor1: new Map(), floor2: new Map() };
+function getChunkKey(x) { return Math.floor(x / CHUNK_W); }
 function generateChunk(floor, chunkIdx) {
   const arr = floor === 1 ? chunks.floor1 : chunks.floor2;
   if (arr.has(chunkIdx)) return arr.get(chunkIdx);
-
   const obstacles = [];
   const baseX = chunkIdx * CHUNK_W;
-
   if (chunkIdx <= 1 && chunkIdx >= -1) {
     arr.set(chunkIdx, { obstacles, chunkIdx });
     return arr.get(chunkIdx);
   }
-
   const obstacleCount = floor === 1 ? 4 + Math.floor(Math.random() * 4) : 5 + Math.floor(Math.random() * 4);
-
   for (let i = 0; i < obstacleCount; i++) {
     const type = pickObstacleType(floor);
     const x = baseX + 100 + Math.random() * (CHUNK_W - 200);
@@ -641,13 +953,8 @@ function generateChunk(floor, chunkIdx) {
       case 'car':    w = 160; h = 80; objType = 'car'; break;
       default:       w = 60; h = 60; objType = 'crate';
     }
-    obstacles.push({
-      x, y: GROUND_Y - h, w, h, type: objType,
-      destructible: Math.random() < 0.3,
-      hp: 50
-    });
+    obstacles.push({ x, y: GROUND_Y - h, w, h, type: objType, destructible: Math.random() < 0.3, hp: 50 });
   }
-
   obstacles.sort((a, b) => a.x - b.x);
   const cleaned = [];
   for (const o of obstacles) {
@@ -657,13 +964,9 @@ function generateChunk(floor, chunkIdx) {
     }
     if (!overlap) cleaned.push(o);
   }
-
   arr.set(chunkIdx, { obstacles: cleaned, chunkIdx });
   return arr.get(chunkIdx);
 }
-
-// === УБРАНЫ БЕТОННЫЕ БЛОКИ И ВЫСОКИЕ СТЕНЫ ===
-// Остались только: ящик, бочка, машина — всё легко перепрыгивается
 function pickObstacleType(floor) {
   const r = Math.random();
   if (floor === 1) {
@@ -676,7 +979,6 @@ function pickObstacleType(floor) {
     return 'car';
   }
 }
-
 function getActiveObstacles(floor, playerX) {
   const arr = floor === 1 ? chunks.floor1 : chunks.floor2;
   const cIdx = getChunkKey(playerX);
@@ -687,10 +989,28 @@ function getActiveObstacles(floor, playerX) {
   }
   return result;
 }
+function isLootOverlappingObstacle(x, y, w, h, floor) {
+  const obstacles = getActiveObstacles(floor, x);
+  const padding = 20;
+  for (const o of obstacles) {
+    if (x + w + padding > o.x && x - padding < o.x + o.w &&
+        y + h + padding > o.y && y - padding < o.y + o.h) return true;
+  }
+  return false;
+}
+function findSafeLootPosition(startX, floor) {
+  for (let attempt = 0; attempt < 30; attempt++) {
+    const x = startX + (attempt === 0 ? 0 : (Math.random() - 0.5) * 600);
+    const y = GROUND_Y - 30;
+    if (!isLootOverlappingObstacle(x, y, 32, 32, floor)) return { x, y };
+  }
+  return { x: startX, y: GROUND_Y - 30 };
+}
 
 // ==================== СОСТОЯНИЕ ====================
 const state = {
   running:false, paused:false, shopOpen:false, floorChoiceOpen:false,
+  tutorialShown: false, saveMode: false,
   level:0, camera:{ x:0 },
   currentFloor: 1,
   enemies:[], bullets:[], enemyBullets:[],
@@ -703,8 +1023,20 @@ const state = {
   nextTraderAt: 20,
   nextFloorChoiceAt: 35,
   traderCooldown: 0,
-  bossSummoned: false
+  bossSummoned: false,
+  sessionCoins: 0,
+  armorHuman: 0,
+  armorDog: 0
 };
+
+const ARMOR_DEFENSE = [0, 0.25, 0.40, 0.55];
+const ARMOR_HUMAN_PRICE = [0, 200, 500, 1200];
+const ARMOR_DOG_PRICE = [0, 150, 400, 1000];
+
+function getArmorReduction(entity) {
+  const level = entity === 'player' ? state.armorHuman : state.armorDog;
+  return ARMOR_DEFENSE[level] || 0;
+}
 
 const WEAPONS = {
   pistol:  { name:'Пистолет', img:'пистолет.png', dmg:25, rate:340, spread:0.03, speed:14, mag:12, reload:900, auto:false, cost:0, sfx:'shoot_pistol', emoji:'🔫' },
@@ -717,9 +1049,7 @@ const player = {
   x:PLAYER_START_X, y:0, vx:0, vy:0,
   w:34, h:60,
   hp:100, maxHp:100, baseMaxHp:100,
-  speed:4.5,
-  jumpPower: JUMP_POWER,
-  onGround: true,
+  speed:4.5, jumpPower: JUMP_POWER, onGround: true,
   facing:1, angle:0, weapon:'pistol',
   unlocked:{ pistol:true, rifle:false, shotgun:false, smg:false },
   ammo:{ pistol:12, rifle:0, shotgun:0, smg:0 },
@@ -734,10 +1064,8 @@ const dog = {
   x:PLAYER_START_X - 60, y:0, vx:0, vy:0,
   w:36, h:28,
   hp:100, maxHp:100, baseMaxHp:100,
-  speed:5.2, facing:1, downed:false,
-  onGround: true,
-  jumpPower: -13,
-  jumpCooldown: 0,
+  speed:5.2, facing:1, downed:false, onGround: true,
+  jumpPower: -13, jumpCooldown: 0,
   barkCooldown:2000, _lastBite:0, _lastBossBite:0,
   aiTarget:null, aiTimer:0, state:'explore',
   _lastX:0, _lastHp:100, footstepTimer:0,
@@ -747,8 +1075,8 @@ dog.y = GROUND_Y - dog.h;
 
 // ==================== ТИПЫ ВРАГОВ ====================
 const ENEMY_TYPES = {
-  zombie:       { img:'Зомби-гражданин.png', hp:45, speed:1.2, dmg:18, color:'#6b8e4e', w:36, h:54, xp:1, melee:true, emoji:'🧟' },
-  'mutant-dog': { img:'Мутант-собака.png', hp:32, speed:3.0, dmg:14, color:'#8b3a3a', w:40, h:30, xp:1, melee:true, emoji:'🐺' },
+  zombie:       { img:'Зомби-гражданин.png', hp:45, speed:1.2, dmg:18, color:'#6b8e4e', w:36, h:54, xp:1, melee:true, emoji:'🧟', isZombie:true },
+  'mutant-dog': { img:'Мутант-собака.png', hp:32, speed:3.0, dmg:14, color:'#8b3a3a', w:40, h:30, xp:1, melee:true, emoji:'🐺', isZombie:true },
   cultist:      { img:'Культист.png', hp:55, speed:1.6, dmg:20, color:'#7a5c9e', w:36, h:58, xp:2, ranged:true, shootRange:520, emoji:'🧙' },
   robot:        { img:'Робот-охранник.png', hp:80, speed:1.1, dmg:22, color:'#5a7a8a', w:38, h:58, xp:2, ranged:true, shootRange:600, emoji:'🤖' },
   butcher:      { img:'Мясник.png', hp:340, speed:1.6, dmg:35, color:'#a02020', w:70, h:90, xp:10, boss:true, melee:true, emoji:'🔪' },
@@ -773,7 +1101,8 @@ function spawnEnemy(type, x, y) {
     shootRange:t.shootRange || 400, xp:t.xp,
     facing:-1, lastShot:0, lastAttack:0, hitFlash:0,
     phase:1, teleportTimer:0, summonTimer:0, crystals:null, img:t.img, emoji:t.emoji,
-    onGround: true
+    onGround: true,
+    isZombie: t.isZombie || false
   };
 }
 
@@ -794,92 +1123,431 @@ function spawnEnemyForWave(forceType) {
   return e;
 }
 
-function startLevel(idx) {
-  state.level = idx;
-  const cfg = LEVEL_CONFIG[idx];
-  const mods = state.mods;
+// ==================== КОПЕЙКИ ====================
+function addCoins(amount, silent) {
+  persistent.coins += amount;
+  state.sessionCoins += amount;
+  savePersistent();
+  updateCoinDisplays();
+  if (!silent) {
+    Audio.pickup_coin();
+    showMessage('+' + amount + ' копеек СССР', 1200);
+  }
+}
+function spendCoins(amount) {
+  if (persistent.coins < amount) return false;
+  persistent.coins -= amount;
+  savePersistent();
+  updateCoinDisplays();
+  return true;
+}
+function updateCoinDisplays() {
+  document.getElementById('coins-val').textContent = persistent.coins;
+  document.getElementById('menu-coins').textContent = persistent.coins;
+  document.getElementById('shop-coins').textContent = persistent.coins;
+  document.getElementById('quests-coins').textContent = persistent.coins;
+}
 
-  player.x = PLAYER_START_X;
-  player.y = GROUND_Y - player.h;
-  player.vx = 0; player.vy = 0; player.facing = 1;
-  player.onGround = true;
-  player.maxHp = Math.round(player.baseMaxHp * mods.hpMul);
-  player.hp = Math.min(player.maxHp, player.hp + 25);
-  player.reloading = false;
+// ==================== МЕНЮ-МАГАЗИН ====================
+function openMenuShop() {
+  Audio.ui_click();
+  document.getElementById('menu').style.display = 'none';
+  document.getElementById('menu-shop').classList.add('active');
+  renderMenuShop();
+}
+function closeMenuShop() {
+  Audio.ui_click();
+  document.getElementById('menu-shop').classList.remove('active');
+  document.getElementById('menu').style.display = 'flex';
+}
+function renderMenuShop() {
+  const c = document.getElementById('menu-shop-items');
+  c.innerHTML = '';
+  updateCoinDisplays();
 
-  dog.x = player.x - 60;
-  dog.y = GROUND_Y - dog.h;
-  dog.vx = 0; dog.vy = 0; dog.onGround = true;
-  dog.maxHp = Math.round(dog.baseMaxHp * mods.dogHpMul);
-  dog.hp = Math.min(dog.maxHp, dog.hp + 35);
-  dog.downed = false; dog.facing = 1;
-  dog.state = 'explore'; dog.aiTarget = null; dog.aiTimer = 0;
-  dog._lastX = dog.x; dog._lastHp = dog.hp;
-  dog.jumpCooldown = 0;
-  dog.reactToPlayerJump = 0;
-
-  state.camera.x = Math.max(0, player.x - W/2);
-  state.enemies = []; state.bullets = []; state.enemyBullets = [];
-  state.loot = []; state.particles = [];
-  state.boss = null; state.bossTriggered = false;
-  state.levelComplete = false;
-  state.currentFloor = 1;
-
-  chunks.floor1.clear();
-  chunks.floor2.clear();
-
-  state.killsThisLevel = 0;
-  state.killsForBoss = cfg.killsForBoss;
-  state.nextTraderAt = 20;
-  state.nextFloorChoiceAt = 35;
-  state.traderCooldown = 0;
-  state.bossSummoned = false;
-  state.objective = cfg.objective;
-
-  const initialEnemies = Math.round(5 * mods.enemyCountMul);
-  for (let i = 0; i < initialEnemies; i++) spawnEnemyForWave();
-
-  const lootCount = Math.round((5 + idx) * mods.lootCountMul);
-  for (let i = 0; i < lootCount; i++) {
-    const x = PLAYER_START_X + 300 + Math.random() * 1500;
-    const types = ['ammo','ammo','medkit','food','money'];
-    const type = types[Math.floor(Math.random() * types.length)];
-    let amount = type==='ammo'?10:type==='medkit'?30:type==='food'?1:20;
-    if (type === 'ammo') amount = Math.round(amount * mods.ammoMul);
-    if (type === 'money') amount = Math.round(amount * (mods.infiniteMoney ? 5 : 1));
-    state.loot.push({ x, y: GROUND_Y - 30, w:32, h:32, type, bob: Math.random()*Math.PI*2, amount });
+  const humanNames = ['Лёгкий бронежилет', 'Усиленный жилет', 'Тяжёлая броня'];
+  for (let i = 0; i < 3; i++) {
+    const level = i + 1;
+    const owned = state.armorHuman >= level;
+    const price = ARMOR_HUMAN_PRICE[level];
+    const defense = Math.round(ARMOR_DEFENSE[level] * 100);
+    const div = document.createElement('div');
+    div.className = 'shop-item' + (owned ? ' owned' : '');
+    div.innerHTML = `
+      <div class="info">
+        <div class="name">🛡️ ${humanNames[i]} (${level}/3)</div>
+        <div class="desc">Защита ${defense}% от всего урона по человеку</div>
+      </div>
+      <div class="price">${owned ? '✓ КУПЛЕНО' : price + ' коп.'}</div>
+      ${owned ? '' : `<button ${persistent.coins < price ? 'disabled' : ''} onclick="buyArmor('human', ${level})">КУПИТЬ</button>`}
+    `;
+    c.appendChild(div);
   }
 
-  if (mods.startChest > 0 && !state.startChestSpawned) {
-    state.startChestSpawned = true;
-    const types = ['ammo','ammo','medkit','money'];
-    for (let i = 0; i < mods.startChest; i++) {
-      state.loot.push({
-        x: 200 + i * 55, y: GROUND_Y - 30, w:32, h:32,
-        type: types[i % types.length], bob: Math.random()*Math.PI*2,
-        amount: types[i % types.length] === 'ammo' ? 20 : types[i % types.length] === 'money' ? 100 : 30
-      });
+  const dogNames = ['Собачий жилет', 'Укреплённый жилет', 'Броня для Барса'];
+  for (let i = 0; i < 3; i++) {
+    const level = i + 1;
+    const owned = state.armorDog >= level;
+    const price = ARMOR_DOG_PRICE[level];
+    const defense = Math.round(ARMOR_DEFENSE[level] * 100);
+    const div = document.createElement('div');
+    div.className = 'shop-item' + (owned ? ' owned' : '');
+    div.innerHTML = `
+      <div class="info">
+        <div class="name">🐕 ${dogNames[i]} (${level}/3)</div>
+        <div class="desc">Защита ${defense}% от урона по Барсу</div>
+      </div>
+      <div class="price">${owned ? '✓ КУПЛЕНО' : price + ' коп.'}</div>
+      ${owned ? '' : `<button ${persistent.coins < price ? 'disabled' : ''} onclick="buyArmor('dog', ${level})">КУПИТЬ</button>`}
+    `;
+    c.appendChild(div);
+  }
+
+  const healDiv = document.createElement('div');
+  healDiv.className = 'shop-item';
+  healDiv.innerHTML = `
+    <div class="info">
+      <div class="name">🍖 Запас еды</div>
+      <div class="desc">+5 к стартовому запасу еды в новой игре</div>
+    </div>
+    <div class="price">30 коп.</div>
+    <button ${persistent.coins < 30 ? 'disabled' : ''} onclick="buyStartingFood()">КУПИТЬ</button>
+  `;
+  c.appendChild(healDiv);
+}
+function buyArmor(type, level) {
+  const price = type === 'human' ? ARMOR_HUMAN_PRICE[level] : ARMOR_DOG_PRICE[level];
+  if (!spendCoins(price)) { Audio.ui_error(); return; }
+  if (type === 'human') {
+    state.armorHuman = level;
+    persistent.purchases.armorHuman = level;
+  } else {
+    state.armorDog = level;
+    persistent.purchases.armorDog = level;
+  }
+  savePersistent();
+  Audio.ui_buy();
+  renderMenuShop();
+  updateHUD();
+}
+function buyStartingFood() {
+  if (!spendCoins(30)) { Audio.ui_error(); return; }
+  persistent.startFood = (persistent.startFood || 0) + 5;
+  persistent.purchases.startFood = persistent.startFood;
+  savePersistent();
+  Audio.ui_buy();
+  renderMenuShop();
+}
+
+// ==================== ЗАДАНИЯ ====================
+function openQuests() {
+  Audio.ui_click();
+  document.getElementById('menu').style.display = 'none';
+  document.getElementById('quests-panel').classList.add('active');
+  renderQuests();
+}
+function closeQuests() {
+  Audio.ui_click();
+  document.getElementById('quests-panel').classList.remove('active');
+  document.getElementById('menu').style.display = 'flex';
+}
+function renderQuests() {
+  const c = document.getElementById('quests-items');
+  c.innerHTML = '';
+  updateCoinDisplays();
+
+  QUESTS.forEach(q => {
+    const progress = Math.min(q.progress(), q.target);
+    const completed = progress >= q.target;
+    const claimed = persistent.quests.claimed[q.id] || false;
+
+    const div = document.createElement('div');
+    div.className = 'quest-item' + (completed ? ' completed' : '');
+    div.innerHTML = `
+      <div class="info">
+        <div class="name">${q.name}</div>
+        <div class="desc">${q.desc}</div>
+        <div class="progress">Прогресс: ${progress} / ${q.target}</div>
+      </div>
+      <div class="reward">${q.reward} коп.</div>
+      <div class="status ${claimed ? 'claimed' : completed ? 'ready' : ''}">
+        ${claimed ? '✓ ПОЛУЧЕНО' : completed ? 'ЗАБРАТЬ' : 'В ПРОЦЕССЕ'}
+      </div>
+    `;
+    if (completed && !claimed) {
+      div.style.cursor = 'pointer';
+      div.onclick = () => claimQuest(q.id);
+    }
+    c.appendChild(div);
+  });
+}
+function claimQuest(id) {
+  const q = QUESTS.find(x => x.id === id);
+  if (!q) return;
+  if (persistent.quests.claimed[id]) return;
+  if (q.progress() < q.target) return;
+  persistent.quests.claimed[id] = true;
+  addCoins(q.reward);
+  savePersistent();
+  Audio.quest_complete();
+  showMessage('🏆 Задание "' + q.name + '" выполнено! +' + q.reward + ' коп.', 2500);
+  renderQuests();
+}
+
+// ==================== МЕНЮ ====================
+function showSelectScreen() {
+  Audio.init();
+  if (Audio.ctx && Audio.ctx.state === 'suspended') Audio.ctx.resume();
+  Audio.ui_click();
+  document.getElementById('menu').style.display = 'none';
+  document.getElementById('select-screen').classList.add('active');
+}
+function backToMenu() {
+  Audio.ui_click();
+  document.getElementById('select-screen').classList.remove('active');
+  document.getElementById('menu').style.display = 'flex';
+}
+function selectMode(m) {
+  settings.mode = m; Audio.ui_click();
+  document.querySelectorAll('[data-mode]').forEach(b => {
+    const active = b.dataset.mode === m;
+    b.classList.toggle('active', active);
+    b.style.background = active ? '#c0392b' : '#1a1a1a';
+    b.style.borderColor = active ? '#e74c3c' : '#444';
+    b.style.color = active ? '#fff' : '#ddd';
+  });
+  document.getElementById('mode-desc').textContent = MODE_INFO[m].desc;
+}
+function selectDiff(d) {
+  settings.diff = d; Audio.ui_click();
+  document.querySelectorAll('[data-diff]').forEach(b => {
+    const active = b.dataset.diff === d;
+    b.classList.toggle('active', active);
+    b.style.background = active ? '#c0392b' : '#1a1a1a';
+    b.style.borderColor = active ? '#e74c3c' : '#444';
+    b.style.color = active ? '#fff' : '#ddd';
+  });
+  document.getElementById('diff-desc').textContent = DIFF_INFO[d].desc;
+}
+
+// ==================== КНОПКА ВЫХОДА В МЕНЮ (ВО ВРЕМЯ ИГРЫ) ====================
+function exitToMenu() {
+  if (!confirm('Выйти в меню? Прогресс этой игры будет потерян (если не включён режим сохранения).')) return;
+  state.running = false;
+  state.paused = false;
+  state.shopOpen = false;
+  state.floorChoiceOpen = false;
+  document.getElementById('shop').style.display = 'none';
+  document.getElementById('floor-choice').style.display = 'none';
+  document.getElementById('tutorial-overlay').classList.remove('active');
+  Audio.stopMusic();
+  Audio.stopAmbient();
+  document.getElementById('exit-to-menu-btn').classList.remove('visible');
+  persistent.quests.games_played += 1;
+  savePersistent();
+  document.getElementById('menu').style.display = 'flex';
+  document.getElementById('menu').style.flexDirection = 'column';
+  updateCoinDisplays();
+  Audio.ui_click();
+}
+
+// ==================== ВЫХОД ИЗ ИГРЫ (ПОЛНОСТЬЮ) ====================
+function exitGame() {
+  if (state.running) {
+    if (!confirm('Игра сейчас идёт! Выйти полностью?\n\n⚠️ Незавершённый прогресс будет потерян (если не включён режим сохранения).')) {
+      return;
+    }
+  } else {
+    if (!confirm('Выйти из игры?')) {
+      return;
     }
   }
 
-  updateHUD();
-  showMessage('УРОВЕНЬ ' + (idx+1) + ': ' + cfg.name.toUpperCase() + '\nУбейте ' + cfg.killsForBoss + ' мобов!', 2800);
-  Audio.level_start();
-  Audio.startMusic(cfg.music);
-  Audio.startAmbient(cfg.ambient);
+  const wasRunning = state.running;
+
+  state.running = false;
+  state.paused = false;
+  state.shopOpen = false;
+  state.floorChoiceOpen = false;
+
+  try { Audio.stopMusic(); Audio.stopAmbient(); } catch (e) {}
+
+  document.getElementById('shop').style.display = 'none';
+  document.getElementById('floor-choice').style.display = 'none';
+  document.getElementById('tutorial-overlay').classList.remove('active');
+  document.getElementById('exit-to-menu-btn').classList.remove('visible');
+  document.getElementById('select-screen').classList.remove('active');
+  document.getElementById('menu-shop').classList.remove('active');
+  document.getElementById('quests-panel').classList.remove('active');
+  document.getElementById('menu').style.display = 'none';
+
+  try {
+    ctx.fillStyle = '#000';
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+  } catch (e) {}
+
+  if (wasRunning) {
+    persistent.quests.games_played += 1;
+    savePersistent();
+  }
+
+  showGoodbyeScreen();
 }
 
+function showGoodbyeScreen() {
+  const old = document.getElementById('goodbye-screen');
+  if (old) old.remove();
+
+  const goodbye = document.createElement('div');
+  goodbye.id = 'goodbye-screen';
+  goodbye.style.cssText = `
+    position:fixed; inset:0; z-index:9999;
+    background:radial-gradient(circle,#1a0505,#000);
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    color:#e74c3c; font-family:'Courier New', monospace;
+    text-align:center; padding:20px;
+    animation: fadeIn 0.6s ease-out;
+  `;
+  goodbye.innerHTML = `
+    <style>
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    </style>
+    <h1 style="font-size:44px; letter-spacing:6px; text-shadow:0 0 30px #e74c3c; margin-bottom:20px;">
+      ДО СВИДАНИЯ
+    </h1>
+    <p style="color:#f39c12; font-size:18px; letter-spacing:3px; margin-bottom:12px;">
+      🪙 Копейки сохранены: ${persistent.coins}
+    </p>
+    <p style="color:#888; font-size:14px; letter-spacing:1px; margin-bottom:30px;">
+      Прогресс магазина и заданий сохранён
+    </p>
+    <p style="color:#666; font-size:12px; letter-spacing:1px; margin-bottom:30px; max-width:400px; line-height:1.6;">
+      Браузер не позволяет закрыть вкладку автоматически.<br>
+      Закройте её вручную (Ctrl+W или ✕ на вкладке).
+    </p>
+    <button onclick="reopenGame()" style="
+      padding:14px 40px; font-family:inherit;
+      font-size:16px; font-weight:bold;
+      background:#27ae60; color:#fff;
+      border:3px solid #2ecc71; cursor:pointer;
+      letter-spacing:2px;
+      box-shadow:0 0 20px rgba(46,204,113,0.5);
+    ">▶ ВЕРНУТЬСЯ В ИГРУ</button>
+  `;
+  document.body.appendChild(goodbye);
+}
+
+function reopenGame() {
+  const g = document.getElementById('goodbye-screen');
+  if (g) g.remove();
+  document.getElementById('menu').style.display = 'flex';
+  document.getElementById('menu').style.flexDirection = 'column';
+  updateCoinDisplays();
+}
+
+// ==================== СТАРТ ИГРЫ ====================
+function startGame() {
+  if (IS_MOBILE) tryFullscreen();
+
+  Audio.init();
+  if (Audio.ctx && Audio.ctx.state === 'suspended') Audio.ctx.resume();
+
+  document.getElementById('select-screen').classList.remove('active');
+  document.getElementById('menu').style.display = 'none';
+
+  state.running = true;
+  state.paused = false;
+  state.saveMode = false;
+  state.level = 0;
+  state.tutorialShown = false;
+  state.mods = getGameplayModifiers();
+  state.money = state.mods.infiniteMoney ? 999999 : 50;
+  state.food = persistent.startFood || 0;
+  state.armorHuman = persistent.purchases.armorHuman || 0;
+  state.armorDog = persistent.purchases.armorDog || 0;
+
+  player.hp = 100;
+  player.baseMaxHp = 100;
+  player.unlocked = { pistol:true, rifle:false, shotgun:false, smg:false };
+  player.ammo = { pistol:12, rifle:0, shotgun:0, smg:0 };
+  player.mastery = {
+    pistol:{lv:1,xp:0}, rifle:{lv:1,xp:0},
+    shotgun:{lv:1,xp:0}, smg:{lv:1,xp:0}
+  };
+  dog.hp = 100;
+  dog.baseMaxHp = 100;
+  dog.downed = false;
+
+  document.getElementById('exit-to-menu-btn').classList.add('visible');
+  startLevel(0);
+}
+
+function startSaveMode() {
+  if (IS_MOBILE) tryFullscreen();
+
+  const save = loadFullGameState();
+  if (!save) {
+    alert('Нет сохранённой игры. Начните новую игру — прогресс будет сохраняться после каждого уровня.');
+    return;
+  }
+  if (!confirm('Продолжить сохранённую игру?\nУровень: ' + (save.level + 1) + '\nHP: ' + Math.round(save.hp) + '\nСохранено: ' + new Date(save.timestamp).toLocaleString())) {
+    return;
+  }
+
+  Audio.init();
+  if (Audio.ctx && Audio.ctx.state === 'suspended') Audio.ctx.resume();
+
+  document.getElementById('menu').style.display = 'none';
+  state.running = true;
+  state.paused = false;
+  state.saveMode = true;
+  state.mods = getGameplayModifiers();
+  state.money = save.money;
+  state.food = save.food;
+
+  player.hp = save.hp;
+  player.baseMaxHp = 100;
+  player.weapon = save.weapon;
+  player.unlocked = save.unlocked;
+  player.ammo = save.ammo;
+  player.mastery = save.mastery;
+  dog.hp = save.dogHp;
+  dog.baseMaxHp = 100;
+  dog.downed = false;
+
+  state.armorHuman = persistent.purchases.armorHuman || 0;
+  state.armorDog = persistent.purchases.armorDog || 0;
+
+  document.getElementById('exit-to-menu-btn').classList.add('visible');
+  startLevel(save.level);
+  showMessage('💾 Загружено сохранение!', 2000);
+}
+
+// ==================== ОБУЧЕНИЕ ====================
+function showTutorial() {
+  if (state.paused) return;
+  state.paused = true;
+  document.getElementById('tutorial-overlay').classList.add('active');
+  Audio.ui_click();
+}
+function closeTutorial() {
+  document.getElementById('tutorial-overlay').classList.remove('active');
+  state.paused = false;
+  Audio.ui_click();
+  showMessage('💡 Удачи, спецназовец!', 2000);
+}
+
+// ==================== ПРИЗЫВ БОССА ====================
 function summonBoss() {
   const cfg = LEVEL_CONFIG[state.level];
   const bossType = cfg.boss;
   const bt = ENEMY_TYPES[bossType];
-
   const bx = state.camera.x + W + 200;
   const by = bt.flying ? GROUND_Y - bt.h - 100 : GROUND_Y - bt.h;
   const boss = spawnEnemy(bossType, bx, by);
   boss.hp = Math.round(boss.hp * (1 + state.level * 0.2));
   boss.maxHp = boss.hp;
-
   if (bossType === 'malgrim') {
     boss.crystals = [
       { x: state.camera.x + W - 100, y: 150, hp:80, maxHp:80, alive:true },
@@ -889,14 +1557,12 @@ function summonBoss() {
     ];
     boss.img = 'Малигрим-1фаза.png';
   }
-
   state.boss = boss;
   state.bossSummoned = true;
   state.bossTriggered = true;
-
   Audio.boss_appear();
   const names = { butcher:'МЯСНИК', shaman:'ВЕРХОВНЫЙ ШАМАН', golem:'СТАЛЬНОЙ ГОЛЕМ', malgrim:'МАЛГРИМ' };
-  showMessage('⚠️ БОСС ПРИЗВАН СПРАВА: ' + (names[bossType] || bossType) + ' ⚠️', 3000);
+  showMessage('⚠️ БОСС ПРИЗВАН: ' + (names[bossType] || bossType) + ' ⚠️', 3000);
 }
 
 function callTrader() {
@@ -922,27 +1588,22 @@ function chooseFloor(goUp) {
   state.floorChoiceOpen = false;
   state.paused = false;
   Audio.elevator_move();
-
   if (goUp) {
     state.currentFloor = 2;
-    showMessage('🛗 ВЫ НА 2 ЭТАЖЕ! Враги сильнее, но лута больше.', 2500);
-    Audio.stopMusic();
-    Audio.startMusic('floor2');
+    showMessage('🛗 ВЫ НА 2 ЭТАЖЕ!', 2500);
+    Audio.stopMusic(); Audio.startMusic('floor2');
     for (const e of state.enemies) {
-      if (!e.boss) {
-        e.hp = Math.round(e.hp * 1.5);
-        e.maxHp = e.hp;
-        e.dmg = Math.round(e.dmg * 1.5);
-      }
+      if (!e.boss) { e.hp = Math.round(e.hp * 1.5); e.maxHp = e.hp; e.dmg = Math.round(e.dmg * 1.5); }
     }
-    for (let i = 0; i < 5; i++) spawnEnemyForWave();
-    for (let i = 0; i < 8; i++) {
-      const x = player.x + 300 + Math.random() * 1500;
+    for (let i = 0; i < 3; i++) spawnEnemyForWave();
+    for (let i = 0; i < 4; i++) {
+      const startX = player.x + 300 + Math.random() * 1500;
+      const pos = findSafeLootPosition(startX, 2);
       const types = ['ammo','ammo','medkit','food','money'];
       const type = types[Math.floor(Math.random() * types.length)];
       let amount = type==='ammo'?15:type==='medkit'?40:type==='food'?2:40;
       if (type === 'ammo') amount = Math.round(amount * state.mods.ammoMul);
-      state.loot.push({ x, y: GROUND_Y - 30, w:32, h:32, type, bob: Math.random()*Math.PI*2, amount });
+      state.loot.push({ x: pos.x, y: pos.y, w:32, h:32, type, bob: Math.random()*Math.PI*2, amount });
     }
     state.nextFloorChoiceAt = state.killsThisLevel + 35;
   } else {
@@ -951,6 +1612,90 @@ function chooseFloor(goUp) {
   }
 }
 
+function startLevel(idx) {
+  state.level = idx;
+  const cfg = LEVEL_CONFIG[idx];
+  const mods = state.mods;
+
+  player.x = PLAYER_START_X;
+  player.y = GROUND_Y - player.h;
+  player.vx = 0; player.vy = 0; player.facing = 1;
+  player.onGround = true;
+  player.maxHp = Math.round(player.baseMaxHp * mods.hpMul);
+  if (!state.saveMode) player.hp = Math.min(player.maxHp, player.hp + 25);
+  player.reloading = false;
+
+  dog.x = player.x - 60;
+  dog.y = GROUND_Y - dog.h;
+  dog.vx = 0; dog.vy = 0; dog.onGround = true;
+  dog.maxHp = Math.round(dog.baseMaxHp * mods.dogHpMul);
+  if (!state.saveMode) dog.hp = Math.min(dog.maxHp, dog.hp + 35);
+  dog.downed = false; dog.facing = 1;
+  dog.state = 'explore'; dog.aiTarget = null; dog.aiTimer = 0;
+  dog._lastX = dog.x; dog._lastHp = dog.hp;
+  dog.jumpCooldown = 0; dog.reactToPlayerJump = 0;
+
+  state.camera.x = Math.max(0, player.x - W/2);
+  state.enemies = []; state.bullets = []; state.enemyBullets = [];
+  state.loot = []; state.particles = [];
+  state.boss = null; state.bossTriggered = false;
+  state.levelComplete = false;
+  state.currentFloor = 1;
+
+  chunks.floor1.clear(); chunks.floor2.clear();
+
+  state.killsThisLevel = 0;
+  state.killsForBoss = cfg.killsForBoss;
+  state.nextTraderAt = 20;
+  state.nextFloorChoiceAt = 35;
+  state.traderCooldown = 0;
+  state.bossSummoned = false;
+  state.objective = cfg.objective;
+
+  const initialEnemies = Math.round(5 * mods.enemyCountMul);
+  for (let i = 0; i < initialEnemies; i++) spawnEnemyForWave();
+
+  const lootCount = Math.max(2, Math.round((2 + Math.floor(idx/2)) * mods.lootCountMul));
+  for (let i = 0; i < lootCount; i++) {
+    const startX = PLAYER_START_X + 300 + Math.random() * 1500;
+    const pos = findSafeLootPosition(startX, 1);
+    const types = ['ammo','ammo','medkit','food','money'];
+    const type = types[Math.floor(Math.random() * types.length)];
+    let amount = type==='ammo'?10:type==='medkit'?30:type==='food'?1:20;
+    if (type === 'ammo') amount = Math.round(amount * mods.ammoMul);
+    if (type === 'money') amount = Math.round(amount * (mods.infiniteMoney ? 5 : 1));
+    state.loot.push({ x: pos.x, y: pos.y, w:32, h:32, type, bob: Math.random()*Math.PI*2, amount });
+  }
+
+  if (mods.startChest > 0 && !state.startChestSpawned) {
+    state.startChestSpawned = true;
+    const types = ['ammo','ammo','medkit','money'];
+    for (let i = 0; i < mods.startChest; i++) {
+      const startX = 200 + i * 55;
+      const pos = findSafeLootPosition(startX, 1);
+      state.loot.push({
+        x: pos.x, y: pos.y, w:32, h:32,
+        type: types[i % types.length], bob: Math.random()*Math.PI*2,
+        amount: types[i % types.length] === 'ammo' ? 20 : types[i % types.length] === 'money' ? 100 : 30
+      });
+    }
+  }
+
+  updateHUD();
+  showMessage('УРОВЕНЬ ' + (idx+1) + ': ' + cfg.name.toUpperCase() + '\nУбейте ' + cfg.killsForBoss + ' мобов!', 2800);
+  Audio.level_start();
+  Audio.startMusic(cfg.music);
+  Audio.startAmbient(cfg.ambient);
+
+  if (!state.tutorialShown && idx === 0 && !state.saveMode) {
+    state.tutorialShown = true;
+    setTimeout(() => showTutorial(), 800);
+  }
+
+  if (state.saveMode) saveFullGameState();
+}
+
+// ==================== HUD ====================
 function updateHUD() {
   document.getElementById('hp-val').textContent = Math.max(0, Math.round(player.hp));
   document.getElementById('hp-fill').style.width = Math.max(0, player.hp/player.maxHp*100) + '%';
@@ -970,8 +1715,10 @@ function updateHUD() {
   document.getElementById('kills').textContent = state.killsThisLevel;
   document.getElementById('kills-needed').textContent = state.killsForBoss;
   document.getElementById('floor').textContent = state.currentFloor;
+  document.getElementById('armor-val').textContent = state.armorHuman + '/3';
   const killPct = Math.min(100, state.killsThisLevel / state.killsForBoss * 100);
   document.getElementById('kill-fill').style.width = killPct + '%';
+  document.getElementById('coins-val').textContent = persistent.coins;
 }
 
 function showMessage(text, dur) {
@@ -981,31 +1728,7 @@ function showMessage(text, dur) {
   state.messageTimer = dur || 2000;
 }
 
-function showSelectScreen() {
-  Audio.init();
-  if (Audio.ctx && Audio.ctx.state === 'suspended') Audio.ctx.resume();
-  Audio.ui_click();
-  document.getElementById('menu').style.display = 'none';
-  document.getElementById('select-screen').style.display = 'flex';
-  document.getElementById('select-screen').style.flexDirection = 'column';
-}
-function backToMenu() {
-  Audio.ui_click();
-  document.getElementById('select-screen').style.display = 'none';
-  document.getElementById('menu').style.display = 'flex';
-  document.getElementById('menu').style.flexDirection = 'column';
-}
-function selectMode(m) {
-  settings.mode = m; Audio.ui_click();
-  document.querySelectorAll('[data-mode]').forEach(b => b.classList.toggle('active', b.dataset.mode === m));
-  document.getElementById('mode-desc').textContent = MODE_INFO[m].desc;
-}
-function selectDiff(d) {
-  settings.diff = d; Audio.ui_click();
-  document.querySelectorAll('[data-diff]').forEach(b => b.classList.toggle('active', b.dataset.diff === d));
-  document.getElementById('diff-desc').textContent = DIFF_INFO[d].desc;
-}
-
+// ==================== ВВОД ====================
 const keys = {};
 let mouseX = 0, mouseY = 0, mouseDown = false, mouseClicked = false;
 
@@ -1021,6 +1744,7 @@ document.addEventListener('keydown', e => {
   if (e.code === 'Digit4') switchWeapon('smg');
   if (e.code === 'KeyM') Audio.toggle();
   if (e.code === 'Escape' && state.shopOpen) closeShop();
+  if (e.code === 'Escape' && document.getElementById('tutorial-overlay').classList.contains('active')) closeTutorial();
 });
 document.addEventListener('keyup', e => keys[e.code] = false);
 
@@ -1036,6 +1760,11 @@ document.getElementById('sound-btn').addEventListener('click', e => {
   e.stopPropagation();
   if (!Audio.ctx) Audio.init();
   Audio.toggle();
+});
+
+document.getElementById('exit-to-menu-btn').addEventListener('click', e => {
+  e.stopPropagation();
+  exitToMenu();
 });
 
 const mobileInput = { left:false, right:false, shoot:false, jump:false };
@@ -1102,7 +1831,6 @@ function tryJump() {
     Audio.jump();
   }
 }
-
 function switchWeapon(w) {
   if (!player.unlocked[w] || player.weapon === w) return;
   player.weapon = w; player.reloading = false;
@@ -1151,51 +1879,38 @@ function resolveObstacleCollision(entity, obstacles, isPlayer) {
   for (const o of obstacles) {
     if (entity.x + entity.w > o.x && entity.x < o.x + o.w &&
         entity.y + entity.h > o.y && entity.y < o.y + o.h) {
-      if (entity.y + entity.h <= o.y + 6) {
-        continue;
-      }
+      if (entity.y + entity.h <= o.y + 6) continue;
       const overlapLeft = (entity.x + entity.w) - o.x;
       const overlapRight = (o.x + o.w) - entity.x;
-      if (overlapLeft < overlapRight) {
-        entity.x = o.x - entity.w;
-      } else {
-        entity.x = o.x + o.w;
-      }
+      if (overlapLeft < overlapRight) entity.x = o.x - entity.w;
+      else entity.x = o.x + o.w;
       if (entity.vx) entity.vx = 0;
     }
   }
 }
 
-const DOG_AI = { 
-  MAX_DIST:380, RETURN_DIST:280, LOOT_DIST:320, ATTACK_DIST:220, EXPLORE_RANGE:200,
-  JUMP_REACT_DIST: 200,
-  JUMP_COOLDOWN: 350
-};
+// ==================== СОБАКА ====================
+const DOG_AI = { MAX_DIST:380, RETURN_DIST:280, LOOT_DIST:320, ATTACK_DIST:220, EXPLORE_RANGE:200, JUMP_REACT_DIST: 200, JUMP_COOLDOWN: 350 };
 
 function updateDog(now, obstacles) {
   const speedMul = dog.downed ? 0.3 : 1;
   const distToPlayer = player.x - dog.x;
   const absDistToPlayer = Math.abs(distToPlayer);
-
   if (dog.hp < dog._lastHp) {
     if (dog.hp < 30 && dog._lastHp >= 30) Audio.dog_hurt();
     dog._lastHp = dog.hp;
   }
-
   if (player.justJumped) {
     player.justJumped = false;
     if (absDistToPlayer < DOG_AI.JUMP_REACT_DIST && dog.onGround && dog.jumpCooldown <= 0) {
-      dog.vy = dog.jumpPower;
-      dog.onGround = false;
+      dog.vy = dog.jumpPower; dog.onGround = false;
       dog.jumpCooldown = DOG_AI.JUMP_COOLDOWN;
       dog.reactToPlayerJump = 500;
       Audio.dog_jump();
     }
   }
-
   if (dog.jumpCooldown > 0) dog.jumpCooldown -= 16;
   if (dog.reactToPlayerJump > 0) dog.reactToPlayerJump -= 16;
-
   dog.aiTimer -= 16;
 
   if (absDistToPlayer > DOG_AI.MAX_DIST) {
@@ -1211,7 +1926,6 @@ function updateDog(now, obstacles) {
       const d = Math.hypot(state.boss.x - dog.x, state.boss.y - dog.y);
       if (d < closestEnemyDist) { closestEnemyDist = d; closestEnemy = state.boss; }
     }
-
     if (closestEnemy && !dog.downed) {
       dog.state = 'attack';
       dog.aiTarget = { x: closestEnemy.x + closestEnemy.w/2 };
@@ -1238,7 +1952,6 @@ function updateDog(now, obstacles) {
       }
     }
   }
-
   if (dog.aiTarget) {
     const dx = dog.aiTarget.x - (dog.x + dog.w/2);
     if (Math.abs(dx) > 8) {
@@ -1246,7 +1959,6 @@ function updateDog(now, obstacles) {
       dog.facing = Math.sign(dx);
     } else dog.vx = 0;
   } else dog.vx = 0;
-
   dog.x += dog.vx;
 
   if (dog.onGround && Math.abs(dog.vx) > 0.3 && dog.jumpCooldown <= 0) {
@@ -1254,8 +1966,7 @@ function updateDog(now, obstacles) {
     for (const o of obstacles) {
       if (checkX > o.x && checkX < o.x + o.w) {
         if (o.h <= 90) {
-          dog.vy = dog.jumpPower;
-          dog.onGround = false;
+          dog.vy = dog.jumpPower; dog.onGround = false;
           dog.jumpCooldown = DOG_AI.JUMP_COOLDOWN;
           Audio.dog_jump();
         }
@@ -1263,28 +1974,21 @@ function updateDog(now, obstacles) {
       }
     }
   }
-
   if (dog.onGround && dog.jumpCooldown <= 0 && absDistToPlayer < 250) {
     if (player.y + player.h < dog.y - 40) {
-      dog.vy = dog.jumpPower;
-      dog.onGround = false;
+      dog.vy = dog.jumpPower; dog.onGround = false;
       dog.jumpCooldown = DOG_AI.JUMP_COOLDOWN;
       Audio.dog_jump();
     }
   }
-
   dog.vy += GRAVITY;
   dog.y += dog.vy;
-
   resolveObstacleCollision(dog, obstacles, false);
-
   if (dog.x < 0) dog.x = 0;
 
   let landed = false;
   if (dog.y + dog.h >= GROUND_Y) {
-    dog.y = GROUND_Y - dog.h;
-    dog.vy = 0;
-    landed = true;
+    dog.y = GROUND_Y - dog.h; dog.vy = 0; landed = true;
   } else {
     if (dog.vy >= 0) {
       for (const o of obstacles) {
@@ -1292,25 +1996,18 @@ function updateDog(now, obstacles) {
         const nowBelow = (dog.y + dog.h) >= o.y;
         const overlapX = (dog.x + dog.w > o.x && dog.x < o.x + o.w);
         if (wasAbove && nowBelow && overlapX) {
-          dog.y = o.y - dog.h;
-          dog.vy = 0;
-          landed = true;
-          break;
+          dog.y = o.y - dog.h; dog.vy = 0; landed = true; break;
         }
       }
     }
   }
-
-  if (landed && !dog.onGround) {
-    Audio.land();
-  }
+  if (landed && !dog.onGround) Audio.land();
   dog.onGround = landed;
 
   if (Math.abs(dog.vx) > 0.5 && dog.onGround && !dog.downed) {
     dog.footstepTimer -= 16;
     if (dog.footstepTimer <= 0) { dog.footstepTimer = 220; Audio.noise(0.04, 0.05, 300); }
   }
-
   dog.barkCooldown -= 16;
   if (dog.barkCooldown <= 0 && !dog.downed) {
     dog.barkCooldown = 3000 + Math.random() * 2500;
@@ -1323,16 +2020,11 @@ function updateDog(now, obstacles) {
       const d = Math.hypot(e.x - dog.x, e.y - dog.y);
       if (d < bd) { bd = d; nearest = { x:e.x + e.w/2, y:e.y }; }
     }
-    if (state.boss && state.boss.hp > 0) {
-      const d = Math.hypot(state.boss.x - dog.x, state.boss.y - dog.y);
-      if (d < bd) { bd = d; nearest = { x:state.boss.x + state.boss.w/2, y:state.boss.y }; }
-    }
     if (nearest) {
       Audio.dog_bark();
       state.particles.push({ x: dog.x + dog.w/2, y: dog.y - 12, vx: 0, vy: -0.6, life: 900, color: '#ffff00', size: 8, text: 'ГАВ!' });
     }
   }
-
   for (const e of state.enemies) {
     if (Math.abs((dog.x + dog.w/2) - (e.x + e.w/2)) < (dog.w + e.w)/2 + 5) {
       if (now - dog._lastBite > 900) {
@@ -1355,6 +2047,7 @@ function updateDog(now, obstacles) {
   }
 }
 
+// ==================== ОБНОВЛЕНИЕ ====================
 function update(dt, now) {
   if (state.paused) return;
   if (state.traderCooldown > 0) state.traderCooldown -= dt;
@@ -1369,19 +2062,14 @@ function update(dt, now) {
   player.vx = moveX * player.speed * weightMul;
   if (moveX !== 0) player.facing = moveX;
   player.x += player.vx;
-
   player.vy += GRAVITY;
   player.y += player.vy;
-
   resolveObstacleCollision(player, obstacles, true);
-
   if (player.x < 0) { player.x = 0; player.vx = 0; }
 
   let landed = false;
   if (player.y + player.h >= GROUND_Y) {
-    player.y = GROUND_Y - player.h;
-    player.vy = 0;
-    landed = true;
+    player.y = GROUND_Y - player.h; player.vy = 0; landed = true;
   } else {
     if (player.vy >= 0) {
       for (const o of obstacles) {
@@ -1389,25 +2077,18 @@ function update(dt, now) {
         const nowBelow = (player.y + player.h) >= o.y;
         const overlapX = (player.x + player.w > o.x && player.x < o.x + o.w);
         if (wasAbove && nowBelow && overlapX) {
-          player.y = o.y - player.h;
-          player.vy = 0;
-          landed = true;
-          break;
+          player.y = o.y - player.h; player.vy = 0; landed = true; break;
         }
       }
     }
   }
-
-  if (landed && !player.onGround) {
-    Audio.land();
-  }
+  if (landed && !player.onGround) Audio.land();
   player.onGround = landed;
 
   if (Math.abs(player.vx) > 0.5 && player.onGround) {
     player.footstepTimer -= 16;
     if (player.footstepTimer <= 0) { player.footstepTimer = 280; Audio.noise(0.05, 0.08, 250); }
   }
-
   updateDog(now, obstacles);
 
   const worldMouseX = mouseX + state.camera.x;
@@ -1443,8 +2124,6 @@ function update(dt, now) {
               }
               Audio.noise(0.2, 0.3, 800);
               for (let k = 0; k < 6; k++) state.particles.push({ x:o.x + o.w/2, y:o.y + o.h/2, vx:(Math.random()-0.5)*5, vy:(Math.random()-0.5)*5, life:400, color:'#888', size:4 });
-            } else {
-              for (let k = 0; k < 2; k++) state.particles.push({ x:b.x, y:b.y, vx:(Math.random()-0.5)*3, vy:(Math.random()-0.5)*3, life:200, color:'#aaa', size:3 });
             }
           }
           dead = true; break;
@@ -1517,6 +2196,10 @@ function update(dt, now) {
         showMessage('Мастерство ' + WEAPONS[player.weapon].name + ' — ур. ' + m.lv + '!', 1500);
         Audio.level_complete();
       }
+      const coinReward = e.elite ? 5 : 1;
+      addCoins(coinReward, true);
+      if (e.isZombie) persistent.quests.killed_zombie_total += 1;
+
       const baseMoney = e.elite ? 30 : 8;
       const floorBonus = state.currentFloor === 2 ? 2 : 1;
       state.money += state.mods.infiniteMoney ? 0 : baseMoney * floorBonus;
@@ -1560,22 +2243,34 @@ function update(dt, now) {
       state.boss = null;
       state.levelComplete = true;
       Audio.boss_death();
-      showMessage('БОСС ПОВЕРЖЕН!', 2000);
+      addCoins(20);
+      persistent.quests.killed_boss_total += 1;
+      persistent.quests.levels_passed += 1;
+      savePersistent();
+      showMessage('БОСС ПОВЕРЖЕН! +20 копеек', 2000);
       setTimeout(() => {
         if (!state.mods.infiniteMoney) state.money += 150;
         Audio.stopMusic(); Audio.stopAmbient();
         if (state.level < LEVEL_CONFIG.length - 1) {
           Audio.level_complete();
           showMessage('Уровень пройден! Открыт магазин...', 1800);
-          setTimeout(() => { startLevel(state.level + 1); openShop(); }, 2000);
+          setTimeout(() => {
+            startLevel(state.level + 1);
+            if (state.saveMode) saveFullGameState();
+            openShop();
+          }, 2000);
         } else {
           Audio.victory();
           showMessage('🏆 ПОБЕДА! МИР СПАСЁН!', 5000);
           state.running = false;
+          localStorage.removeItem(SAVE_KEY);
           setTimeout(() => {
             document.getElementById('menu').style.display = 'flex';
+            document.getElementById('menu').style.flexDirection = 'column';
             document.querySelector('#menu h1').textContent = 'ПОБЕДА!';
             document.querySelector('#menu h2').textContent = 'МАЛГРИМ ПОВЕРЖЕН';
+            document.getElementById('exit-to-menu-btn').classList.remove('visible');
+            updateCoinDisplays();
           }, 5000);
         }
       }, 2200);
@@ -1588,10 +2283,16 @@ function update(dt, now) {
     Audio.stopMusic(); Audio.stopAmbient();
     Audio.death();
     showMessage('ВЫ ПОГИБЛИ...', 3000);
+    persistent.quests.games_played += 1;
+    savePersistent();
+    if (state.saveMode) localStorage.removeItem(SAVE_KEY);
     setTimeout(() => {
       document.getElementById('menu').style.display = 'flex';
+      document.getElementById('menu').style.flexDirection = 'column';
       document.querySelector('#menu h1').textContent = 'ВЫ ПОГИБЛИ';
       document.querySelector('#menu h2').textContent = 'ПОПРОБУЙТЕ СНОВА';
+      document.getElementById('exit-to-menu-btn').classList.remove('visible');
+      updateCoinDisplays();
     }, 3000);
   }
 
@@ -1622,11 +2323,9 @@ function update(dt, now) {
     state.messageTimer -= dt;
     if (state.messageTimer <= 0) document.getElementById('msg').style.display = 'none';
   }
-
   if (!state.bossSummoned && state.enemies.length < 4 + state.level) {
     if (Math.random() < 0.03) spawnEnemyForWave();
   }
-
   if (state.mods.infiniteMoney) state.money = 999999;
   if (state.mods.enemyPassive && player.hp < 1) player.hp = 1;
 }
@@ -1637,9 +2336,7 @@ function updateEnemy(e, now, obstacles) {
   const dy = (player.y + player.h/2) - (e.y + e.h/2);
   const dist = Math.hypot(dx, dy);
   e.facing = Math.sign(dx) || -1;
-
   if (state.mods.enemyPassive && !e.boss) { e.vx = 0; e.y = GROUND_Y - e.h; return; }
-
   if (e.ranged) {
     if (dist > e.shootRange * 0.7) e.vx = Math.sign(dx) * e.speed;
     else if (dist < e.shootRange * 0.35) e.vx = -Math.sign(dx) * e.speed * 0.6;
@@ -1671,9 +2368,8 @@ function updateEnemy(e, now, obstacles) {
   }
   e.x += e.vx;
   resolveObstacleCollision(e, obstacles, false);
-  if (!e.flying) {
-    e.y = GROUND_Y - e.h;
-  } else {
+  if (!e.flying) { e.y = GROUND_Y - e.h; }
+  else {
     const targetY = GROUND_Y - e.h - 100 - Math.sin(now / 800) * 40;
     e.y += (targetY - e.y) * 0.05;
   }
@@ -1756,7 +2452,9 @@ function damagePlayer(dmg) {
     setTimeout(() => player.invuln = 0, 300);
     return;
   }
-  player.hp -= dmg;
+  const armorReduction = getArmorReduction('player');
+  const finalDmg = dmg * (1 - armorReduction);
+  player.hp -= finalDmg;
   player.invuln = 300;
   Audio.hit_player();
   updateHUD();
@@ -1876,11 +2574,9 @@ function drawObstacle(o) {
 function draw() {
   const cfg = LEVEL_CONFIG[state.level] || LEVEL_CONFIG[0];
   const isFloor2 = state.currentFloor === 2;
-
   let sky1, sky2;
   if (isFloor2) { sky1 = '#0a0a25'; sky2 = '#1a0a30'; }
   else { sky1 = cfg.sky1; sky2 = cfg.sky2; }
-
   const grad = ctx.createLinearGradient(0, 0, 0, H);
   grad.addColorStop(0, sky1);
   grad.addColorStop(1, sky2);
@@ -2003,7 +2699,7 @@ function draw() {
   ctx.fillStyle = isFloor2 ? '#3498db' : '#f39c12';
   ctx.font = 'bold 12px Courier New';
   ctx.textAlign = 'left'; ctx.textBaseline = 'top';
-  ctx.fillText('🏢 ЭТАЖ ' + state.currentFloor + (isFloor2 ? ' (усиленные враги ×1.5)' : ''), 8, 60);
+  ctx.fillText('🏢 ЭТАЖ ' + state.currentFloor, 8, 60);
 
   ctx.fillStyle = '#f39c12';
   ctx.font = 'bold 10px Courier New';
@@ -2040,13 +2736,6 @@ function drawParallax(cfg, isFloor2) {
       const bx = ((i * 180 - px) % (W + 300)) - 150;
       const bh = 150 + (i * 53) % 220;
       ctx.fillRect(bx, GROUND_Y - bh, 90 + (i*13)%60, bh);
-      ctx.fillStyle = 'rgba(255,220,100,0.4)';
-      for (let wy = GROUND_Y - bh + 20; wy < GROUND_Y - 30; wy += 25) {
-        for (let wx = bx + 10; wx < bx + 70; wx += 18) {
-          if (Math.random() < 0.5) ctx.fillRect(wx, wy, 8, 10);
-        }
-      }
-      ctx.fillStyle = 'rgba(20,20,60,0.8)';
     }
     ctx.fillStyle = '#ddeeff';
     ctx.beginPath(); ctx.arc(W - 150, 100, 40, 0, Math.PI*2); ctx.fill();
@@ -2090,7 +2779,6 @@ function drawDog() {
   const img = IMG['Барс.png'];
   ctx.save();
   ctx.translate(dog.x + dog.w/2, dog.y + dog.h/2);
-
   if (!dog.onGround) {
     ctx.save();
     ctx.globalAlpha = 0.3;
@@ -2101,7 +2789,6 @@ function drawDog() {
     ctx.fill();
     ctx.restore();
   }
-
   if (dog.facing < 0) ctx.scale(-1, 1);
   if (dog.downed) ctx.globalAlpha = 0.55;
   const isMoving = Math.abs(dog.vx) > 0.5;
@@ -2118,6 +2805,12 @@ function drawDog() {
   if (dog.hp < dog.maxHp) {
     ctx.fillStyle = 'rgba(0,0,0,0.7)'; ctx.fillRect(dog.x, dog.y - 10, dog.w, 4);
     ctx.fillStyle = '#3498db'; ctx.fillRect(dog.x, dog.y - 10, dog.w * (dog.hp / dog.maxHp), 4);
+  }
+  if (state.armorDog > 0) {
+    ctx.fillStyle = '#3498db';
+    ctx.font = 'bold 10px Courier New';
+    ctx.textAlign = 'center';
+    ctx.fillText('🛡️' + state.armorDog, dog.x + dog.w/2, dog.y - 16);
   }
 }
 
@@ -2136,6 +2829,13 @@ function drawPlayer() {
     ctx.fillText('🧑‍🚒', 0, 0);
   }
   ctx.restore();
+
+  if (state.armorHuman > 0) {
+    ctx.fillStyle = '#3498db';
+    ctx.font = 'bold 10px Courier New';
+    ctx.textAlign = 'center';
+    ctx.fillText('🛡️' + state.armorHuman, player.x + player.w/2, player.y - 16);
+  }
 
   const w = WEAPONS[player.weapon];
   const wx = player.x + player.w/2;
@@ -2169,35 +2869,6 @@ function gameLoop(now) {
   requestAnimationFrame(gameLoop);
 }
 
-function startGame() {
-  Audio.init();
-  if (Audio.ctx && Audio.ctx.state === 'suspended') Audio.ctx.resume();
-
-  document.getElementById('select-screen').style.display = 'none';
-  document.getElementById('menu').style.display = 'none';
-
-  state.running = true;
-  state.paused = false;
-  state.level = 0;
-  state.mods = getGameplayModifiers();
-  state.money = state.mods.infiniteMoney ? 999999 : 50;
-  state.food = 0;
-
-  player.hp = 100;
-  player.baseMaxHp = 100;
-  player.unlocked = { pistol:true, rifle:false, shotgun:false, smg:false };
-  player.ammo = { pistol:12, rifle:0, shotgun:0, smg:0 };
-  player.mastery = {
-    pistol:{lv:1,xp:0}, rifle:{lv:1,xp:0},
-    shotgun:{lv:1,xp:0}, smg:{lv:1,xp:0}
-  };
-  dog.hp = 100;
-  dog.baseMaxHp = 100;
-  dog.downed = false;
-
-  startLevel(0);
-}
-
 setupMobileControls();
 
 if (IS_MOBILE) {
@@ -2206,8 +2877,14 @@ if (IS_MOBILE) {
   document.getElementById('menu-keys').innerHTML = 'A/D или ←→ — ходьба · W/Space — прыжок<br>Мышь — прицел (360°) · ЛКМ — огонь<br>R — перезарядка · 1-4 — оружие · M — звук';
 }
 
+updateCoinDisplays();
+
 loadAllImages().then(() => {
   console.log('🎮 Готово. Игра запускается.');
+  if (hasSave()) {
+    const saveBtn = document.querySelector('button.green');
+    if (saveBtn) saveBtn.textContent = '💾 ПРОДОЛЖИТЬ';
+  }
 });
 
 requestAnimationFrame(gameLoop);
